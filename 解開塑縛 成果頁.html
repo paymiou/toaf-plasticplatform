@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>解開束縛．三十無塑實踐 成果展</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Tailwind 主題設定
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Noto Sans TC', 'sans-serif'],
+          },
+          colors: {
+            deepblue: {
+              start: '#3b5bdb',
+              end: '#1e1b4b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 自訂滾動條樣式 (冰藍色系) */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #bfdbfe; /* blue-200 */
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #93c5fd; /* blue-300 */
+    }
+    /* 針對單一行持項目的細緻橫向滑軌 */
+    .item-scroll::-webkit-scrollbar {
+      height: 3px;
+    }
+    .item-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .item-scroll::-webkit-scrollbar-thumb {
+      background: #cbd5e1; /* slate-300 */
+      border-radius: 10px;
+    }
+    .item-scroll::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8; /* slate-400 */
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    /* 隱藏橫向滾動條但保留滾動功能 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-[#f8fafc] text-slate-800 font-sans min-h-screen flex flex-col relative">
+
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute top-[20%] left-[-5%] w-[500px] h-[500px] rounded-full bg-blue-100/30 blur-[100px]"></div>
+    <div class="absolute bottom-[10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-cyan-50/40 blur-[100px]"></div>
+  </div>
+
+  <header class="pt-8 pb-8 lg:pt-14 lg:pb-12 relative z-10 border-b border-[#9dd4d6] bg-[#9dd4d6] shadow-sm overflow-hidden flex flex-col justify-center">
+    <div class="absolute inset-0 pointer-events-none z-0">
+      <div class="absolute -top-12 left-14 w-96 h-96 rounded-full bg-white/30 blur-[80px]"></div>
+      <div class="absolute bottom-0 right-14 w-96 h-96 rounded-full bg-cyan-500/10 blur-[80px]"></div>
+    </div>
+
+    <div class="lg:hidden w-full flex flex-col items-center relative z-10 pt-2">
+      <div class="max-w-7xl mx-auto text-center px-4 sm:px-6 w-full flex flex-col items-center">
+        <span class="text-teal-900 bg-white/50 border border-white/60 px-3 sm:px-4 py-1 rounded-full text-[10px] sm:text-sm font-bold tracking-wider sm:tracking-widest mb-2 inline-block drop-shadow-sm whitespace-nowrap">
+          - 2026 / 8 / 2 ～ 31 中區研討班 個人賽成果頁 -
+        </span>
+        <div class="relative inline-block mt-2 mb-2">
+          <div class="absolute inset-0 bg-white/80 blur-xl sm:blur-2xl rounded-full scale-110 sm:scale-125 z-0 pointer-events-none"></div>
+          <img src="https://paymiou.github.io/paymiou/August/sea.png" alt="海洋裝飾" class="absolute -top-5 -left-5 w-8 h-8 object-contain z-20">
+          <h1 class="relative z-10 text-2xl sm:text-3xl font-black tracking-tight text-slate-800 drop-shadow-sm">
+            【 解開塑縛．三十無塑實踐 】
+          </h1>
+        </div>
+      </div>
+      <div class="w-full mt-6 sm:mt-8 relative z-10 flex justify-center">
+        <img src="https://paymiou.github.io/paymiou/August/LOGO5.png" alt="三十無塑實踐 LOGO" class="w-full max-w-2xl h-auto object-cover block">
+      </div>
+      <div class="max-w-7xl mx-auto text-center px-4 sm:px-6 w-full flex flex-col items-center">
+        <p class="text-slate-800 max-w-2xl mx-auto text-xs sm:text-sm font-bold leading-relaxed mt-6 sm:mt-8 drop-shadow-sm px-4">
+          三十天的無塑修煉，<br>不是生活的限制，而是解開塑縛的開始。<br>讓生活回歸自由、找回心的主控權！
+        </p>
+        <div class="flex items-center justify-center gap-3 sm:gap-6 mt-6 sm:mt-8 w-full max-w-md mx-auto z-20 relative">
+          <div class="bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-2.5 sm:py-4 flex flex-col items-center shadow-[0_4px_15px_rgba(0,0,0,0.05)] w-1/2 transition-transform hover:scale-105">
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <img src="https://paymiou.github.io/paymiou/August/user.png" alt="總人數" class="w-3.5 h-3.5 sm:w-4 object-contain">
+              <span class="text-[10px] sm:text-xs text-teal-800 font-bold opacity-80 tracking-widest">實踐總人數</span>
+            </div>
+            <div class="flex items-baseline gap-1 text-teal-900 mt-1">
+              <span class="hero-total-users text-2xl sm:text-3xl font-black">0</span>
+              <span class="text-[10px] sm:text-xs font-bold opacity-80">人</span>
+            </div>
+          </div>
+          <div class="bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-4 py-2.5 sm:py-4 flex flex-col items-center shadow-[0_4px_15px_rgba(0,0,0,0.05)] w-1/2 transition-transform hover:scale-105">
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <img src="https://paymiou.github.io/paymiou/August/reef.png" alt="總積分" class="w-3.5 h-3.5 sm:w-4 object-contain">
+              <span class="text-[10px] sm:text-xs text-teal-800 font-bold opacity-80 tracking-widest">行持總積分</span>
+            </div>
+            <div class="flex items-baseline gap-1 text-teal-900 mt-1">
+              <span class="hero-total-score text-2xl sm:text-3xl font-black italic">0</span>
+              <span class="text-[10px] sm:text-xs font-bold opacity-80">PT</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('filter-section').scrollIntoView({ behavior: 'smooth', block: 'start' })" class="mt-6 sm:mt-8 text-teal-800/60 hover:text-teal-900 transition-colors animate-bounce focus:outline-none cursor-pointer z-20 relative">
+          <i class="fa-solid fa-chevron-down text-3xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="hidden lg:flex flex-col max-w-7xl mx-auto w-full items-center relative z-10 px-8 gap-8">
+      <span class="text-teal-900 bg-white/50 border border-white/60 px-5 py-2 rounded-full text-sm xl:text-base font-bold tracking-widest mb-6 inline-block drop-shadow-sm whitespace-nowrap">
+        - 2026 / 8 / 2 ～ 31 中區研討班 個人賽成果頁 -
+      </span>
+      <div class="w-full flex flex-row items-center justify-between gap-8 mt-2">
+        <div class="w-1/2 flex flex-col items-center">
+          <div class="w-fit flex flex-col items-start text-left relative">
+            <div class="relative inline-block mb-4">
+              <div class="absolute inset-0 bg-white/80 blur-2xl rounded-full scale-125 z-0 pointer-events-none"></div>
+              <img src="https://paymiou.github.io/paymiou/August/sea.png" alt="海洋裝飾" class="absolute -top-7 -left-10 w-11 h-11 object-contain z-20">
+              <h1 class="relative z-10 text-3xl lg:text-[32px] xl:text-[40px] font-black tracking-tight text-slate-800 drop-shadow-sm leading-tight whitespace-nowrap">
+                解開塑縛．三十無塑實踐
+              </h1>
+            </div>
+            <p class="text-slate-800 text-sm xl:text-base font-bold leading-relaxed drop-shadow-sm pl-2 tracking-wider">
+              三十天的無塑修煉，<br>
+              不是生活的限制，而是解開塑縛的開始。<br>
+              讓生活回歸自由、找回心的主控權！
+            </p>
+          </div>
+          <div class="flex items-center justify-center gap-5 mt-8 w-full max-w-md mx-auto">
+            <div class="bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-5 py-4 flex flex-col items-center shadow-[0_4px_15px_rgba(0,0,0,0.05)] w-1/2 transition-transform hover:scale-105">
+              <div class="flex items-center gap-1.5 mb-1.5">
+                <img src="https://paymiou.github.io/paymiou/August/user.png" alt="總人數" class="w-4 h-4 object-contain">
+                <span class="text-sm xl:text-base text-teal-800 font-bold opacity-90 tracking-widest">實踐總人數</span>
+              </div>
+              <div class="flex items-baseline justify-center gap-1.5 text-teal-900 mt-1 w-full">
+                <span class="hero-total-users text-4xl xl:text-5xl font-black">0</span>
+                <span class="text-xs xl:text-sm font-bold opacity-80">人</span>
+              </div>
+            </div>
+            <div class="bg-white/50 backdrop-blur-md border border-white/60 rounded-2xl px-5 py-4 flex flex-col items-center shadow-[0_4px_15px_rgba(0,0,0,0.05)] w-1/2 transition-transform hover:scale-105">
+              <div class="flex items-center gap-1.5 mb-1.5">
+                <img src="https://paymiou.github.io/paymiou/August/reef.png" alt="總積分" class="w-4 h-4 object-contain">
+                <span class="text-sm xl:text-base text-teal-800 font-bold opacity-90 tracking-widest">行持總積分</span>
+              </div>
+              <div class="flex items-baseline justify-center gap-1.5 text-teal-900 mt-1 w-full">
+                <span class="hero-total-score text-4xl xl:text-5xl font-black italic">0</span>
+                <span class="text-xs xl:text-sm font-bold opacity-80">PT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-1/2 relative z-10 flex justify-center items-center">
+          <img src="https://paymiou.github.io/paymiou/August/LOGO5.png" alt="三十無塑實踐 LOGO" class="w-full max-w-[98%] h-auto object-cover block">
+        </div>
+      </div>
+      <button onclick="document.getElementById('filter-section').scrollIntoView({ behavior: 'smooth', block: 'start' })" class="mt-16 mx-auto text-teal-800/60 hover:text-teal-900 transition-colors animate-bounce focus:outline-none cursor-pointer z-20 relative">
+        <i class="fa-solid fa-chevron-down text-3xl"></i>
+      </button>
+    </div>
+  </header>
+
+  <main id="filter-section" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex flex-col lg:flex-row gap-4 lg:gap-8 items-start relative z-10">
+    
+    <aside class="w-full lg:w-[460px] flex-shrink-0 flex flex-col bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-blue-50 overflow-hidden h-fit lg:sticky lg:top-6 lg:h-[calc(100vh-48px)] z-10">
+      <div class="p-5 border-b border-blue-50 bg-gradient-to-br from-blue-50/50 to-transparent flex flex-col gap-4 flex-shrink-0">
+        <div class="w-full bg-white/60 p-3 rounded-2xl shadow-inner border border-blue-100/30">
+          <div class="grid grid-cols-3 gap-2 lg:flex lg:flex-wrap lg:gap-1.5 lg:justify-start items-center" id="region-buttons-container">
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="relative flex-grow">
+            <input type="text" id="search-input" oninput="filterChallengers()" placeholder="在當前區域搜尋姓名..." class="w-full pl-9 pr-4 py-2.5 bg-white border border-blue-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all text-slate-700 placeholder-slate-400 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-blue-400 text-xs"></i>
+          </div>
+          <button onclick="fetchData()" title="更新資料" class="flex-shrink-0 bg-white hover:bg-blue-50 active:bg-blue-100 text-blue-600 transition-colors px-3 sm:px-4 py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-1.5 border border-blue-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400">
+            <i id="refresh-icon" class="fa-solid fa-rotate"></i>
+            <span id="refresh-text" class="hidden sm:inline">更新</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="challengers-list" class="flex-grow bg-slate-50/50 pb-2 overflow-y-auto max-h-[400px] lg:max-h-none lg:h-0">
+        <div class="p-12 text-center text-slate-400">
+          <i class="fa-solid fa-spinner fa-spin text-2xl text-blue-500 mb-3"></i>
+          <p class="text-xs font-medium">正在比對會員區域與個人挑戰資料...</p>
+        </div>
+      </div>
+    </aside>
+
+    <section class="flex-grow flex flex-col gap-4 lg:gap-6 w-full lg:w-auto lg:sticky lg:top-6 lg:h-[calc(100vh-48px)] lg:overflow-y-auto lg:pr-2">
+      <div id="status-placeholder" class="bg-gradient-to-br from-blue-50/80 via-white to-cyan-50/30 rounded-3xl p-8 lg:p-12 text-center border border-blue-100/60 shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col items-center justify-center min-h-[300px] lg:min-h-[500px]">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-900 w-20 h-20 lg:w-24 lg:h-24 rounded-full flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-900/20">
+          <i class="fa-solid fa-droplet text-3xl lg:text-4xl"></i>
+        </div>
+        <h3 class="text-base lg:text-lg font-black text-slate-800 mb-3 tracking-wide">點擊左側名單查看實踐詳情</h3>
+        <p class="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed">
+          請先選擇上方區域按鈕，並點擊下方該區挑戰者，即可在此查看其三十天挑戰中，每週寫下的深刻心得與減塑影像。
+        </p>
+      </div>
+
+      <div id="challenger-detail" class="hidden flex flex-col gap-4 lg:gap-6 animate-fade-in">
+        <div onclick="toggleCollapseDetail()" class="bg-white rounded-3xl p-4 sm:p-5 lg:p-7 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-blue-50 relative overflow-hidden cursor-pointer lg:cursor-default" title="手機版點擊可收合成果，返回列表">
+          <div class="absolute top-0 left-0 w-1.5 sm:w-2 h-full bg-gradient-to-b from-blue-500 to-indigo-800"></div>
+          
+          <div class="lg:hidden absolute top-2.5 right-3 bg-slate-100/90 backdrop-blur-sm text-slate-500 px-2 py-0.5 rounded-full text-[9px] font-bold flex items-center gap-1 active:bg-slate-200 shadow-sm">
+            <span>收合返回</span> <i class="fa-solid fa-chevron-up text-[8px]"></i>
+          </div>
+
+          <div class="flex flex-row items-center justify-between gap-2 sm:gap-5 pl-2 sm:pl-4">
+            <div class="flex items-center space-x-2 sm:space-x-4 lg:space-x-5 min-w-0">
+              <div id="detail-rank-container" class="bg-gradient-to-br from-blue-600 to-indigo-900 border border-indigo-400/30 rounded-full flex flex-col items-center justify-center text-white shadow-lg shadow-indigo-900/20 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 flex-shrink-0">
+                <span class="text-[8px] lg:text-[10px] font-bold opacity-80 tracking-widest mt-0.5 sm:mt-1 leading-none">RANK</span>
+                <span class="text-lg sm:text-2xl lg:text-3xl font-black italic leading-tight" id="detail-rank-span">1</span>
+              </div>
+              <div class="min-w-0">
+                <div id="detail-location" class="text-blue-500 text-[9px] sm:text-[11px] lg:text-xs font-bold tracking-widest mb-0.5 block truncate"></div>
+                <div class="flex items-center gap-1 sm:gap-2 lg:gap-3 mb-0 sm:mb-1">
+                  <h2 id="detail-name" class="text-base sm:text-xl lg:text-2xl font-black text-slate-800 tracking-wide truncate"></h2>
+                </div>
+                <p class="text-slate-500 text-[9px] sm:text-[11px] lg:text-xs flex items-center gap-1 sm:gap-1.5 font-medium mt-0.5 sm:mt-1 truncate">
+                  <img src="https://paymiou.github.io/paymiou/August/contract.png" class="w-3.5 h-3.5 object-contain inline-block"> 
+                  完成回饋 <span id="detail-feedback-count" class="font-bold text-slate-700">0</span> 週
+                </p>
+                <p class="text-slate-500 text-[9px] sm:text-[11px] lg:text-xs flex items-center gap-1 sm:gap-1.5 font-medium mt-0.5 sm:mt-1 truncate">
+                  <img src="https://paymiou.github.io/paymiou/August/energy-consumption.png" class="w-3.5 h-3.5 object-contain inline-block"> 
+                  班幹部審核通過 <span id="detail-approval-count" class="font-bold text-slate-700">0</span> 週
+                </p>
+              </div>
+            </div>
+            
+            <div onclick="event.stopPropagation(); openPracticeModal()" title="點擊查看三十天行持統計清單" class="cursor-pointer hover:scale-[1.02] active:scale-95 transition-transform bg-gradient-to-br from-[#1e1b4b] to-[#3b5bdb] rounded-[14px] sm:rounded-[20px] px-3 py-2 sm:px-5 sm:py-3.5 shadow-lg shadow-indigo-900/30 flex flex-col items-end justify-center relative overflow-hidden min-w-[75px] sm:min-w-[130px] flex-shrink-0">
+              <div class="flex items-baseline gap-0.5 sm:gap-1 text-white relative z-10 mb-0 sm:mb-0.5">
+                <span class="text-xl sm:text-4xl font-black italic tracking-tighter drop-shadow-sm leading-none" id="detail-score-b">0</span>
+                <span class="text-[8px] sm:text-sm font-bold opacity-90 drop-shadow-sm">PT</span>
+              </div>
+              <div class="flex items-center gap-2 sm:gap-4 mt-0.5 sm:mt-1 text-white text-[10px] sm:text-sm font-bold relative z-10 tracking-wide">
+                <div class="flex items-center gap-1.5 drop-shadow-sm" title="法語成就任務達成數">
+                  <img src="https://paymiou.github.io/paymiou/August/shines.png" class="w-3 h-3 sm:w-4 sm:h-4 object-contain"> <span id="detail-dharma-count">0</span>
+                </div>
+                <div class="flex items-center gap-1.5 drop-shadow-sm" title="總讚數">
+                  <img src="https://paymiou.github.io/paymiou/August/heart.png" class="w-3 h-3 sm:w-4 sm:h-4 object-contain"> <span id="detail-likes-c">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4 lg:space-y-6 flex flex-col items-center" id="timeline-container">
+          </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="practice-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] hidden flex-col items-center justify-center p-2 sm:p-4 transition-opacity duration-300 opacity-0" onclick="closePracticeModal()">
+    <div class="bg-slate-50 rounded-3xl w-full max-w-6xl h-[90vh] overflow-hidden shadow-2xl relative flex flex-col my-auto mx-auto" onclick="event.stopPropagation()">
+      <div class="p-4 sm:p-6 border-b border-slate-200 flex justify-between items-start sm:items-center bg-white shadow-sm z-10 relative flex-shrink-0">
+        <div class="flex items-start gap-2 sm:gap-3">
+          <i class="fa-solid fa-table-list text-blue-500 mt-1 sm:mt-0 text-lg sm:text-xl"></i>
+          <div id="modal-header-title" class="font-black tracking-wide"></div>
+        </div>
+        <button onclick="closePracticeModal()" class="text-slate-400 hover:text-slate-600 transition-colors text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 flex-shrink-0 ml-4">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="practice-modal-content" class="p-2 sm:p-6 flex-grow flex flex-col min-h-0 bg-slate-50/50">
+        </div>
+    </div>
+  </div>
+
+  <div id="lightbox" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-50 hidden flex-col items-center justify-center p-2 sm:p-4 transition-opacity" onclick="closeLightbox()">
+    <button class="absolute top-3 right-3 sm:top-4 sm:right-4 lg:top-6 lg:right-6 text-white/70 hover:text-white transition-colors text-2xl sm:text-3xl lg:text-4xl focus:outline-none bg-black/20 rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center z-[60]">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <button onclick="prevImage(event)" class="absolute left-0 sm:left-6 lg:left-10 text-white/70 hover:text-white transition-colors text-3xl sm:text-4xl lg:text-5xl focus:outline-none p-3 sm:p-4 z-[60]">
+      <i class="fa-solid fa-chevron-left drop-shadow-lg"></i>
+    </button>
+    <button onclick="nextImage(event)" class="absolute right-0 sm:right-6 lg:right-10 text-white/70 hover:text-white transition-colors text-3xl sm:text-4xl lg:text-5xl focus:outline-none p-3 sm:p-4 z-[60]">
+      <i class="fa-solid fa-chevron-right drop-shadow-lg"></i>
+    </button>
+    <div class="max-w-5xl max-h-[90vh] flex items-center justify-center relative w-full px-1 sm:px-20" onclick="event.stopPropagation()">
+      <img id="lightbox-img" src="" alt="放大成果照" class="max-w-full max-h-[85vh] object-contain rounded-lg sm:rounded-xl shadow-2xl ring-1 ring-white/10 transition-opacity duration-300 pointer-events-none select-none">
+    </div>
+    <div class="mt-4 sm:mt-6 text-center z-[60]">
+      <p id="lightbox-caption" class="text-white font-bold tracking-widest text-xs sm:text-sm bg-blue-900/60 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full inline-block backdrop-blur-sm border border-blue-400/30 shadow-lg"></p>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg z-50 transition-all duration-300 opacity-0 pointer-events-none transform translate-y-4 flex items-center gap-2">
+    <i id="toast-icon" class="fa-solid fa-circle-exclamation text-pink-400"></i>
+    <span id="toast-text">登入挑戰，取得點讚權限</span>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwWf2ONqm7TKsCZBIyzsxIsV4TDTjarrtVm2xtKSvSFnBKYour_Xd3meZ0SDICQRXYVlQ/exec";
+    
+    let isLoggedIn = false;
+    let userId = "";
+    let myGivenLikes = [];
+
+    function autoLoginByFingerprint() {
+      const fingerprint = navigator.userAgent;
+      callJsonpApi('login', { isAutoCheck: "true", userAgent: fingerprint }, function(data) {
+        if (data && data.result === "success") {
+          isLoggedIn = true;
+          userId = data.uid || "";
+          myGivenLikes = data.myGivenLikes ? String(data.myGivenLikes).split(',').filter(Boolean) : [];
+          if (selectedChallengerId) {
+            selectChallenger(selectedChallengerId);
+          }
+        }
+      });
+    }
+
+    const SPREADSHEET_ID = "1BaxkH6TiYec6WmivQJOoFMfrn4MZnhryldKE0j5p7AI";
+    const CHALLENGE_GID = 1532083422; 
+    const MEMBER_SHEET_NAME = "會員資料"; 
+
+    const CHALLENGE_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${CHALLENGE_GID}`;
+    const MEMBER_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(MEMBER_SHEET_NAME)}`;
+
+    const REGIONS = [
+      { name: '全部', m: 'order-1', d: 'lg:order-1' },
+      { name: '忠明', m: 'order-2', d: 'lg:order-2' },
+      { name: '中苑本部', m: 'order-3', d: 'lg:order-7' },
+      { name: '大里', m: 'order-4', d: 'lg:order-3' },
+      { name: '昌平', m: 'order-5', d: 'lg:order-4' },
+      { name: '彰化支苑', m: 'order-6', d: 'lg:order-8' },
+      { name: '豐原', m: 'order-7', d: 'lg:order-5' },
+      { name: '南投', m: 'order-8', d: 'lg:order-6' },
+      { name: '清水支苑', m: 'order-9', d: 'lg:order-9' }
+    ];
+    let activeRegion = '全部'; 
+
+    let challengersData = []; 
+    let filteredChallengers = []; 
+    let selectedChallengerId = null; 
+    let currentLightboxImages = [];
+    let currentLightboxIndex = 0;
+    let toastTimeout = null;
+
+    // 核心任務字典
+    const ORACLES_DATA = {
+      1: "今日徹底拒絕使用塑膠袋。",
+      2: "今日出門購物堅持自備環保袋，斷絕任何無心傷害。",
+      3: "有意識地觀察並減少手中產生的塑膠廢棄物。",
+      4: "主動向身邊至少一位 friend 宣導塑膠對生態的真實危害。",
+      5: "今日嘗試不購買，也不接受任何帶有塑膠包裝的商品與食物。",
+      6: "今日外出，準備兩個以上的淨塑好物，絕不讓師長憂心。",
+      7: "今日生活目標：完全不使用一次性塑膠製品！",
+      8: "用溫和且堅定的減塑行動，影響家人同事或店家一同拒絕塑料袋。",
+      9: "出門自備環保餐具與容器，絕不留下任何塑料垃圾。",
+      10: "今日堅決拒絕一切會碎裂成微塑膠毒藥的薄膜塑料製品。",
+      11: "從手中攔截並終結任何一個流向自然界的塑膠垃圾。",
+      12: "今日飲食全面改用玻璃或不鏽鋼等安全替代品。",
+      13: "出門提早準備環保替代方案，不怕麻煩。",
+      14: "今日環保杯不離身，也不購買塑膠瓶裝飲料。",
+      15: "今天的消費中貫徹「源頭減量」，拒絕所有用完即丟的塑膠用品。",
+      16: "以慈悲心面對一項無法解決的塑膠難題！",
+      17: "找出一個使用塑膠的舊習慣，試著找出取代方案。",
+      18: "在腦海中想像，海洋動物因塑膠而受害的畫面。",
+      19: "觀看一則生物受到塑膠危害的新聞或報導。",
+      20: "今日我有檢視與覺察使用塑膠的心。",
+      21: "試著思考對於塑膠袋應有的正知見？",
+      22: "今日拒絕使用任何可能釋放化學毒素與微塑膠的塑料容器及包裝。",
+      23: "試著思考我使用塑膠的想法，有問題嗎？",
+      24: "今日不產生看似小，卻為複合性材質的「零食包裝」。",
+      25: "今日不用任何一次性塑膠製品。",
+      26: "嘗試找出一項可以取代塑膠的淨塑好物。",
+      27: "將正念帶在身上，我今天的行為是否有所不同？",
+      28: "今日以純淨及嚴謹的「無塑生活」，為自己積聚廣大的福智資糧。",
+      29: "思考塑膠與慈悲心之間的關係，我今天的行為是否有所不同？",
+      30: "拿出修行人的大勇猛心，今日不購買也不使用任何塑膠用品。"
+    };
+
+    const CORE_PATTERNS = [
+      { id: 1, regex: /徹底拒絕使用塑膠袋/ },
+      { id: 2, regex: /堅持自備環保袋斷絕任何無心傷害/ },
+      { id: 3, regex: /觀察並減少手中產生/ },
+      { id: 4, regex: /向身邊至少一位.*宣導.*真實危害/ },
+      { id: 5, regex: /嘗試不購買.*帶有塑膠包裝/ },
+      { id: 6, regex: /準備兩個以上的淨塑好物絕不讓師長憂心/ },
+      { id: 7, regex: /完全不使用一次性塑膠/ },
+      { id: 8, regex: /堅定的減塑行動影響家人同事一同拒絕塑料袋/ },
+      { id: 9, regex: /自備環保餐具與容器不留下任何塑料/ },
+      { id: 10, regex: /微塑膠毒藥薄膜塑料/ },
+      { id: 11, regex: /攔截並終結流向自然界/ },
+      { id: 12, regex: /改用玻璃或不鏽鋼/ },
+      { id: 13, regex: /提早準備環保替代方案不怕麻煩/ },
+      { id: 14, regex: /環保杯不離身塑膠瓶裝飲料/ },
+      { id: 15, regex: /源頭減量用完即丟/ },
+      { id: 16, regex: /慈悲心面對塑膠難題/ },
+      { id: 17, regex: /使用塑膠的舊習慣試著找出取代方案/ },
+      { id: 18, regex: /海洋動物因塑膠而受害/ },
+      { id: 19, regex: /受到塑膠危害的新聞/ },
+      { id: 20, regex: /檢視與覺察使用塑膠的心/ },
+      { id: 21, regex: /塑膠袋應有的正知見/ },
+      { id: 22, regex: /釋放化學毒素微塑膠的塑料容器/ },
+      { id: 23, regex: /思考我使用塑膠的想法/ },
+      { id: 24, regex: /複合性材質零食包裝/ },
+      { id: 25, regex: /不用任何一次性塑膠製品/ },
+      { id: 26, regex: /可以取代塑膠的淨塑好物/ },
+      { id: 27, regex: /正念帶在身上/ },
+      { id: 28, regex: /以純淨及嚴謹無塑生活福智資糧/ },
+      { id: 29, regex: /塑膠與慈悲心之間的關係/ },
+      { id: 30, regex: /大勇猛心不購買也不使用任何/ }
+    ];
+
+    window.onload = function() {
+      autoLoginByFingerprint(); 
+      fetchData();
+    };
+
+    function columnLetterToIndex(letter) {
+      let column = 0, length = letter.length;
+      for (let i = 0; i < length; i++) {
+        column += (letter.charCodeAt(i) - 64) * Math.pow(26, length - i - 1);
+      }
+      return column - 1;
+    }
+
+    function convertDriveUrl(url) {
+      if (!url) return '';
+      url = url.trim();
+      const match = url.match(/(id=|\/d\/|\/folders\/)([a-zA-Z0-9_-]{25,110})/);
+      return (match && match[2]) ? `https://lh3.googleusercontent.com/d/${match[2]}` : url;
+    }
+
+    function normalizeRegion(rawRegion) {
+      if (!rawRegion) return '其他';
+      const r = rawRegion.trim();
+      if (r.includes('大里')) return '大里';
+      if (r.includes('中苑') || r.includes('本部')) return '中苑本部';
+      if (r.includes('忠明')) return '忠明';
+      if (r.includes('昌平')) return '昌平';
+      if (r.includes('清水')) return '清水支苑';
+      if (r.includes('豐原')) return '豐原';
+      if (r.includes('南投')) return '南投';
+      if (r.includes('彰化')) return '彰化支苑';
+      return '其他';
+    }
+
+    function updateHeroStats() {
+      const totalUsers = challengersData.length;
+      const totalScore = challengersData.reduce((sum, ch) => {
+        const score = parseInt(ch.totalScore, 10);
+        return sum + (isNaN(score) ? 0 : score);
+      }, 0);
+
+      document.querySelectorAll('.hero-total-users').forEach(el => el.innerText = totalUsers.toLocaleString());
+      document.querySelectorAll('.hero-total-score').forEach(el => el.innerText = totalScore.toLocaleString());
+    }
+
+    async function fetchData() {
+      showLoading(true);
+      const icon = document.getElementById('refresh-icon');
+      if (icon) icon.classList.add('fa-spin');
+
+      try {
+        const [challengeRes, memberRes] = await Promise.all([
+          fetch(CHALLENGE_URL),
+          fetch(MEMBER_URL).catch(() => null)
+        ]);
+
+        if (!challengeRes.ok) throw new Error('挑戰賽資料讀取失敗');
+        
+        let uidRegionMap = {};
+        if (memberRes && memberRes.ok) {
+          const memberCsv = await memberRes.text();
+          const memberRows = parseCSV(memberCsv);
+          uidRegionMap = processMemberData(memberRows);
+        }
+
+        const challengeCsv = await challengeRes.text();
+        const challengeRows = parseCSV(challengeCsv);
+        processChallengeData(challengeRows, uidRegionMap);
+        
+      } catch (error) {
+        console.warn('雲端資料讀取失敗或權限不足', error);
+      } finally {
+        showLoading(false);
+        if (icon) icon.classList.remove('fa-spin');
+      }
+    }
+
+    function parseCSV(text) {
+      let r = [], row = [''], i = 0, c = 0, q = false;
+      r.push(row);
+      while (i < text.length) {
+        let ch = text[i];
+        if (ch === '"') {
+          if (q && text[i+1] === '"') { row[c] += '"'; i++; } else { q = !q; }
+        } else if (ch === ',' && !q) {
+          c++; row[c] = '';
+        } else if ((ch === '\r' || ch === '\n') && !q) {
+          if (ch === '\r' && text[i+1] === '\n') { i++; }
+          row = ['']; r.push(row); c = 0;
+        } else {
+          row[c] += ch;
+        }
+        i++;
+      }
+      return r.filter(row => row.length > 1 || row[0] !== '');
+    }
+
+    function processMemberData(rows) {
+      const map = {};
+      if (rows.length <= 1) return map;
+      const headers = rows[0];
+      
+      let uidCol = headers.findIndex(h => h && h.toUpperCase().includes('UID'));
+      if (uidCol === -1) uidCol = 0;
+      const regionCol = 12; 
+      const locationCol = 13; 
+      const approvalCols = [8, 9, 10, 11]; 
+
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        if (row.length > uidCol) {
+          const uid = row[uidCol].trim();
+          if (uid) {
+            const rawRegion = row.length > regionCol ? row[regionCol].trim() : '';
+            const rawLocation = (row.length > locationCol && row[locationCol]) ? row[locationCol].trim() : '無地點資料';
+            
+            let approvalCount = 0;
+            let approvedWeeks = { 1: false, 2: false, 3: false, 4: false };
+            approvalCols.forEach((colIndex, idx) => {
+              const weekNum = idx + 1;
+              if (row.length > colIndex && row[colIndex]) {
+                const val = row[colIndex].trim().toUpperCase();
+                if (val === 'V') {
+                  approvalCount++;
+                  approvedWeeks[weekNum] = true;
+                }
+              }
+            });
+
+            map[uid] = {
+              region: normalizeRegion(rawRegion),
+              location: rawLocation,
+              approvalCount: approvalCount,
+              approvedWeeks: approvedWeeks
+            };
+          }
+        }
+      }
+      return map;
+    }
+
+    function processChallengeData(rows, uidRegionMap) {
+      if (rows.length <= 1) return;
+      const headers = rows[0];
+      
+      let uidCol = headers.findIndex(h => h && h.toUpperCase().includes('UID'));
+      if (uidCol === -1) uidCol = 0;
+      const nameCol = 4; 
+      
+      const feedbackCols = [
+        columnLetterToIndex('EZ'), columnLetterToIndex('FC'), columnLetterToIndex('FF'), columnLetterToIndex('FI')
+      ];
+      
+      const colSpecs = [
+        { week: 1, type: 'text', colIndex: columnLetterToIndex('EZ') },
+        { week: 1, type: 'image', colIndex: columnLetterToIndex('FA') },
+        { week: 1, type: 'likes', colIndex: columnLetterToIndex('FB') },
+        { week: 2, type: 'text', colIndex: columnLetterToIndex('FC') },
+        { week: 2, type: 'image', colIndex: columnLetterToIndex('FD') },
+        { week: 2, type: 'likes', colIndex: columnLetterToIndex('FE') },
+        { week: 3, type: 'text', colIndex: columnLetterToIndex('FF') },
+        { week: 3, type: 'image', colIndex: columnLetterToIndex('FG') },
+        { week: 3, type: 'likes', colIndex: columnLetterToIndex('FH') },
+        { week: 4, type: 'text', colIndex: columnLetterToIndex('FI') },
+        { week: 4, type: 'image', colIndex: columnLetterToIndex('FJ') },
+        { week: 4, type: 'likes', colIndex: columnLetterToIndex('FK') }
+      ];
+
+      const tempChallengers = {};
+      for (let r = 1; r < rows.length; r++) {
+        const row = rows[r];
+        if (!row[nameCol]) continue;
+        const challengerName = row[nameCol].trim();
+        const uid = row[uidCol] ? row[uidCol].trim() : `temp_${r}`;
+        const totalScore = row[1] ? row[1].trim() : 0; 
+        
+        if (challengerName === '' || challengerName === '挑戰者姓名') continue;
+        const rank = row[0] ? row[0].trim() : '-'; 
+
+        if (!tempChallengers[uid]) {
+          const memberInfo = uidRegionMap[uid] || { region: '其他', location: '無地點資料', approvalCount: 0, approvedWeeks: { 1: false, 2: false, 3: false, 4: false } };
+          tempChallengers[uid] = { 
+            id: `challenger_${r}`, 
+            uid: uid,
+            rank: rank,
+            name: challengerName, 
+            region: memberInfo.region,
+            location: memberInfo.location,
+            totalScore: totalScore,
+            totalLikes: 0, 
+            dharmaCount: 0,
+            feedbackCount: 0,
+            approvalCount: memberInfo.approvalCount || 0,
+            approvedWeeks: memberInfo.approvedWeeks || { 1: false, 2: false, 3: false, 4: false },
+            uniqueCorePractices: new Set(),
+            uniqueGeneralPractices: new Set(),
+            dailyPractices: {},
+            weeksMap: {} 
+          };
+        }
+        
+        const challenger = tempChallengers[uid];
+        challenger.rank = rank; 
+
+        let nonCoreTaskMap = new Map();
+        let nonCoreIndex = 1;
+        let dailyDharmaCount = 0; 
+
+        for (let d = 1; d <= 30; d++) {
+          const dharmaColIdx = 7 + (d - 1) * 5;
+          if (dharmaColIdx < row.length && row[dharmaColIdx]) {
+            const dVal = row[dharmaColIdx].trim().toUpperCase();
+            if (dVal === 'V') {
+              dailyDharmaCount++;
+            }
+          }
+
+          const colIdx = 8 + (d - 1) * 5;
+          if (colIdx < row.length) {
+            let val = row[colIdx] ? row[colIdx].trim() : '';
+            if (val) {
+              val = val.replace(/[(（]加\s*1\s*分[)）]/g, '');
+              const items = val.split(/[\n,]+/).map(p => p.trim()).filter(p => p !== '');
+              let generalCandidates = [];
+
+              if (!challenger.dailyPractices[d]) {
+                challenger.dailyPractices[d] = { core: [], general: [] };
+              }
+
+              items.forEach(part => {
+                let matchedCoreId = null;
+                for (let cp of CORE_PATTERNS) {
+                  if (cp.regex.test(part)) {
+                    matchedCoreId = cp.id;
+                    break;
+                  }
+                }
+
+                if (matchedCoreId !== null) {
+                  let coreText = `${matchedCoreId}. ${ORACLES_DATA[matchedCoreId]}`;
+                  if (!challenger.dailyPractices[d].core.includes(coreText)) {
+                    challenger.dailyPractices[d].core.push(coreText);
+                  }
+                  challenger.uniqueCorePractices.add(coreText);
+
+                  let cleanPart = part.replace(ORACLES_DATA[matchedCoreId], '')
+                                      .replace(new RegExp(`^${matchedCoreId}\\.\\s*`), '')
+                                      .replace(/^[、,]+|[、,]$/g, '')
+                                      .trim();
+                  if (cleanPart) {
+                    generalCandidates.push(cleanPart);
+                  }
+                } else {
+                  generalCandidates.push(part);
+                }
+              });
+
+              generalCandidates.forEach(cand => {
+                let subItems = cand.split(/[、,]+/).map(i => i.trim()).filter(i => i !== '');
+                subItems.forEach(item => {
+                  let cleanGen = item.replace(/^\d+\.\s*/, '').replace(/^[-—★\s(（]+/, '').trim();
+                  
+                  if (cleanGen && cleanGen.length > 1 && !cleanGen.includes('未完成') && !cleanGen.toLowerCase().includes('any')) {
+                    if (!nonCoreTaskMap.has(cleanGen)) {
+                      nonCoreTaskMap.set(cleanGen, `${nonCoreIndex}. ${cleanGen}`);
+                      nonCoreIndex++;
+                    }
+                    const numberedItem = nonCoreTaskMap.get(cleanGen);
+                    if (!challenger.dailyPractices[d].general.includes(numberedItem)) {
+                      challenger.dailyPractices[d].general.push(numberedItem);
+                    }
+                    challenger.uniqueGeneralPractices.add(numberedItem);
+                  }
+                });
+              });
+            }
+          }
+        }
+
+        challenger.dharmaCount = dailyDharmaCount;
+
+        let currentFeedbackCount = 0;
+        feedbackCols.forEach(idx => {
+          if (idx < row.length && row[idx] && row[idx].trim() !== '') {
+            currentFeedbackCount++;
+          }
+        });
+        challenger.feedbackCount = currentFeedbackCount;
+
+        colSpecs.forEach(spec => {
+          if (spec.colIndex >= row.length) return;
+          const val = row[spec.colIndex] ? row[spec.colIndex].trim() : '';
+          if (!challenger.weeksMap[spec.week]) {
+            challenger.weeksMap[spec.week] = { week: spec.week, text: '', image: '', likes: 0 };
+          }
+          if (spec.type === 'image') {
+            if (val) {
+              const driveUrls = val.split(/[\s,\n]+/).map(v => convertDriveUrl(v)).filter(v => v);
+              if (driveUrls.length > 0) {
+                challenger.weeksMap[spec.week].image = challenger.weeksMap[spec.week].image ? 
+                  challenger.weeksMap[spec.week].image + ',' + driveUrls.join(',') : driveUrls.join(',');
+              }
+            }
+          } else if (spec.type === 'likes') {
+            const parsedLikes = parseInt(val, 10);
+            challenger.weeksMap[spec.week].likes = isNaN(parsedLikes) ? 0 : parsedLikes;
+          } else {
+            if (val) {
+              challenger.weeksMap[spec.week].text = challenger.weeksMap[spec.week].text ? 
+                challenger.weeksMap[spec.week].text + '\n' + val : val;
+            }
+          }
+        });
+
+        let computedLikes = 0;
+        Object.values(challenger.weeksMap).forEach(w => {
+          computedLikes += (w.likes || 0);
+        });
+        const sheetLikes = row[2] ? parseInt(row[2].trim(), 10) : 0;
+        challenger.totalLikes = computedLikes > 0 ? computedLikes : (isNaN(sheetLikes) ? 0 : sheetLikes);
+      }
+
+      challengersData = Object.values(tempChallengers).map(ch => {
+        const weeksArray = Object.values(ch.weeksMap)
+          .filter(w => w.week <= 4 && (w.text !== '' || w.image !== ''))
+          .sort((a, b) => a.week - b.week);
+        
+        return {
+          id: ch.id, 
+          uid: ch.uid,
+          rank: ch.rank,
+          name: ch.name, 
+          region: ch.region,
+          location: ch.location,
+          totalScore: ch.totalScore,
+          totalLikes: ch.totalLikes,
+          dharmaCount: ch.dharmaCount,
+          feedbackCount: ch.feedbackCount,
+          approvalCount: ch.approvalCount,
+          approvedWeeks: ch.approvedWeeks,
+          uniqueCorePractices: Array.from(ch.uniqueCorePractices),
+          uniqueGeneralPractices: Array.from(ch.uniqueGeneralPractices),
+          dailyPractices: ch.dailyPractices,
+          weeks: weeksArray, 
+          textCount: weeksArray.filter(w => w.text !== '').length, 
+          imageCount: weeksArray.filter(w => w.image !== '').length,
+          completedWeeksCount: weeksArray.length
+        };
+      }); 
+
+      challengersData.sort((a, b) => {
+        const rankA = parseInt(a.rank, 10);
+        const rankB = parseInt(b.rank, 10);
+        if (!isNaN(rankA) && !isNaN(rankB)) return rankA - rankB;
+        if (!isNaN(rankA)) return -1;
+        if (!isNaN(rankB)) return 1;
+        return a.name.localeCompare(b.name, 'zh-TW');
+      });
+
+      updateHeroStats();
+      filterChallengers();
+    }
+
+    function buildTableRows(statsArray, groups, isCore) {
+      if (statsArray.length === 0) return '';
+      return statsArray.map(stat => {
+        const displayItem = isCore ? 
+           `<div class="flex items-center w-full overflow-x-auto sm:overflow-hidden item-scroll pb-0.5 sm:pb-0"><span class="text-[#1e3a8a] font-bold whitespace-nowrap sm:truncate min-w-max sm:min-w-0 pr-2" title="${stat.item}">${stat.item}</span></div>` : 
+           `<div class="text-slate-700 font-medium w-full overflow-x-auto sm:overflow-hidden item-scroll pb-0.5 sm:pb-0"><span class="whitespace-nowrap sm:truncate min-w-max sm:min-w-0 pr-2 block title="${stat.item}">${stat.item}</span></div>`;
+        
+        let rowHtml = `<td class="sticky left-0 bg-white z-20 py-1.5 px-2 text-[10px] sm:text-[11px] leading-snug shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)] border-r border-slate-100 w-[140px] max-w-[140px] sm:w-[260px] sm:max-w-[260px]">${displayItem}</td>`;
+        
+        groups.forEach(g => {
+          for (let d = g.start; d <= g.end; d++) {
+            const done = stat.days[d];
+            const icon = done ? `<i class="fa-solid fa-check text-teal-500 text-[10px]"></i>` : `<span class="text-slate-200/40">-</span>`;
+            rowHtml += `<td class="col-g${g.id}-detail hidden py-1.5 px-0.5 text-center text-[10px] border-r border-slate-50">${icon}</td>`;
+          }
+          const countClass = stat.groupCounts[g.id] > 0 ? 'text-blue-600 font-bold' : 'text-slate-400 font-normal';
+          rowHtml += `<td class="col-g${g.id}-summary py-1.5 px-1 text-center text-[11px] font-bold border-r border-slate-100 bg-blue-50/10 ${countClass}">${stat.groupCounts[g.id]}</td>`;
+        });
+
+        rowHtml += `<td class="py-1.5 px-2 text-center text-blue-600 font-black text-xs min-w-[50px] bg-slate-50/50">${stat.count}</td>`;
+        return `<tr class="hover:bg-blue-50/30 transition-colors border-b border-slate-100 last:border-0">${rowHtml}</tr>`;
+      }).join('');
+    }
+
+    function renderCharts(ch) {
+      const contentDiv = document.getElementById('practice-modal-content');
+      if (!contentDiv) return;
+
+      const groups = [
+        { id: 1, name: 'D1-D8', start: 1, end: 8, span: 8 },
+        { id: 2, name: 'D9-15', start: 9, end: 15, span: 7 },
+        { id: 3, name: 'D16-22', start: 16, end: 22, span: 7 },
+        { id: 4, name: 'D23-30', start: 23, end: 30, span: 8 }
+      ];
+
+      const coreStats = ch.uniqueCorePractices.map(item => {
+        let count = 0, groupCounts = {1:0, 2:0, 3:0, 4:0}, days = {};
+        for (let d = 1; d <= 30; d++) {
+          let done = ch.dailyPractices[d] && ch.dailyPractices[d].core && ch.dailyPractices[d].core.includes(item);
+          days[d] = done;
+          if (done) {
+            count++;
+            if(d<=8) groupCounts[1]++; else if(d<=15) groupCounts[2]++; else if(d<=22) groupCounts[3]++; else groupCounts[4]++;
+          }
+        }
+        return { item, count, days, groupCounts, type: 'core' };
+      }).sort((a,b) => {
+        const numA = parseInt(a.item.match(/^(\d+)\./)?.[1] || 999, 10);
+        const numB = parseInt(b.item.match(/^(\d+)\./)?.[1] || 999, 10);
+        return numA - numB;
+      });
+
+      const genStats = ch.uniqueGeneralPractices.map(item => {
+        let count = 0, groupCounts = {1:0, 2:0, 3:0, 4:0}, days = {};
+        for (let d = 1; d <= 30; d++) {
+          let done = ch.dailyPractices[d] && ch.dailyPractices[d].general && ch.dailyPractices[d].general.includes(item);
+          days[d] = done;
+          if (done) {
+            count++;
+            if(d<=8) groupCounts[1]++; else if(d<=15) groupCounts[2]++; else if(d<=22) groupCounts[3]++; else groupCounts[4]++;
+          }
+        }
+        return { item, count, days, groupCounts, type: 'general' };
+      }).sort((a, b) => {
+        const numA = parseInt(a.item.match(/^(\d+)\./)?.[1] || 999, 10);
+        const numB = parseInt(b.item.match(/^(\d+)\./)?.[1] || 999, 10);
+        return numA - numB;
+      });
+
+      let thead1 = `<tr class="h-[32px]"><th rowspan="2" class="sticky top-0 left-0 bg-white z-50 px-2 text-slate-700 font-extrabold text-[11px] sm:text-xs whitespace-normal shadow-[2px_2px_5px_-2px_rgba(0,0,0,0.1)] border-b border-r border-slate-200 w-[140px] max-w-[140px] sm:w-[260px] sm:max-w-[260px]"><div class="flex items-center gap-1.5"><img src="https://paymiou.github.io/paymiou/August/bluestar.png" class="w-4 h-4 object-contain">核心項目</div></th>`;
+      let thead2 = `<tr class="h-[28px]">`;
+
+      groups.forEach(g => {
+        thead1 += `<th rowspan="2" colspan="1" class="th-g${g.id} sticky top-0 z-40 py-1.5 px-1 bg-blue-50 text-blue-700 font-bold text-[11px] text-center border-r border-slate-200 cursor-pointer hover:bg-blue-100 transition-colors border-b border-slate-300 select-none" onclick="toggleTableGroup(${g.id})">${g.name} <i class="th-icon-g${g.id} fa-solid fa-plus ml-0.5 opacity-70 text-[9px]"></i></th>`;
+        for (let d = g.start; d <= g.end; d++) {
+          thead2 += `<th class="col-g${g.id}-detail hidden sticky top-[32px] z-40 px-0.5 bg-slate-50 text-slate-500 font-bold text-[9px] text-center border-r border-slate-100 min-w-[22px] border-b border-slate-200 shadow-[0_2px_5px_-2px_rgba(0,0,0,0.05)]">D${d}</th>`;
+        }
+      });
+
+      thead1 += `<th rowspan="2" class="sticky top-0 z-40 px-2 bg-white text-slate-700 font-extrabold text-[11px] sm:text-xs text-center whitespace-nowrap min-w-[50px] border-b border-slate-200 shadow-[0_2px_5px_-2px_rgba(0,0,0,0.1)]">累積次數</th></tr>`;
+      thead2 += `</tr>`;
+
+      contentDiv.innerHTML = `
+        <div class="w-full h-full flex flex-col bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] relative min-h-0">
+          <div class="px-2 py-2 sm:px-6 sm:py-3 flex justify-between items-center flex-shrink-0 border-b border-slate-50">
+            <button onclick="downloadCSV()" class="flex items-center gap-1.5 hover:text-blue-600 transition-colors bg-blue-50 hover:bg-blue-100 px-3 py-1.5 sm:py-2 rounded-lg text-blue-700 font-extrabold shadow-sm active:scale-95 text-[11px] sm:text-sm" title="下載 CSV 檔案">
+              <i class="fa-solid fa-file-csv text-blue-600 text-sm sm:text-base"></i> 點我下載行持清單
+            </button>
+            <span class="inline-flex items-center gap-1 text-[9px] sm:text-xs text-slate-500 font-medium bg-slate-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md w-fit">
+              <i class="fa-regular fa-clock"></i> 每日早上 6 點更新
+            </span>
+          </div>
+          <div class="flex-grow overflow-auto overscroll-contain relative rounded-b-2xl bg-white custom-scrollbar" style="scrollbar-width: thin;">
+            <table class="w-full text-left border-collapse min-w-max">
+              <thead class="sticky top-0 z-40 bg-white">
+                ${thead1}
+                ${thead2}
+              </thead>
+              <tbody>
+                ${coreStats.length > 0 ? buildTableRows(coreStats, groups, true) : ''}
+                ${genStats.length > 0 ? `
+                  <tr>
+                    <td colspan="36" class="p-0 border-y border-slate-200 bg-white">
+                      <div class="sticky left-0 inline-flex items-center px-3 py-2 text-slate-700 font-extrabold text-[11px] sm:text-xs z-30 w-fit my-1">
+                        <img src="https://paymiou.github.io/paymiou/August/reef.png" class="w-4 h-4 mr-1.5 object-contain opacity-80"> 一般行持項目
+                      </div>
+                    </td>
+                  </tr>
+                  ${buildTableRows(genStats, groups, false)}
+                ` : ''}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    window.downloadCSV = function() {
+      if (!selectedChallengerId) return;
+      const ch = challengersData.find(c => c.id === selectedChallengerId);
+      if (!ch) return;
+
+      let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+      csvContent += "任務類型,行持項目,D1,D2,D3,D4,D5,D6,D7,D8,D9,D10,D11,D12,D13,D14,D15,D16,D17,D18,D19,D20,D21,D22,D23,D24,D25,D26,D27,D28,D29,D30,累積次數\n";
+      
+      const appendRow = (item, isCore) => {
+        let row = [isCore ? "核心任務" : "一般任務", `"${item.replace(/"/g, '""')}"`];
+        let count = 0;
+        for (let d = 1; d <= 30; d++) {
+          let done = false;
+          if (isCore && ch.dailyPractices[d] && ch.dailyPractices[d].core) {
+            done = ch.dailyPractices[d].core.includes(item);
+          } else if (!isCore && ch.dailyPractices[d] && ch.dailyPractices[d].general) {
+            done = ch.dailyPractices[d].general.includes(item);
+          }
+          row.push(done ? "V" : "");
+          if (done) count++;
+        }
+        row.push(count);
+        csvContent += row.join(",") + "\n";
+      };
+
+      if (ch.uniqueCorePractices && ch.uniqueCorePractices.length > 0) {
+        const coreSorted = [...ch.uniqueCorePractices].sort((a,b) => {
+          const numA = parseInt(a.match(/^(\d+)\./)?.[1] || 999, 10);
+          const numB = parseInt(b.match(/^(\d+)\./)?.[1] || 999, 10);
+          return numA - numB;
+        });
+        coreSorted.forEach(item => appendRow(item, true));
+      }
+      
+      if (ch.uniqueGeneralPractices && ch.uniqueGeneralPractices.length > 0) {
+        const genSorted = [...ch.uniqueGeneralPractices].sort((a,b) => {
+          const numA = parseInt(a.match(/^(\d+)\./)?.[1] || 999, 10);
+          const numB = parseInt(b.match(/^(\d+)\./)?.[1] || 999, 10);
+          return numA - numB;
+        });
+        genSorted.forEach(item => appendRow(item, false));
+      }
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `${ch.name}_三十無塑實踐_行持清單.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    window.toggleTableGroup = function(groupId) {
+      const spans = {1: 8, 2: 7, 3: 7, 4: 8};
+      const ths = document.querySelectorAll(`.th-g${groupId}`);
+      const icons = document.querySelectorAll(`.th-icon-g${groupId}`);
+      const summaries = document.querySelectorAll(`.col-g${groupId}-summary`);
+      const details = document.querySelectorAll(`.col-g${groupId}-detail`);
+      
+      if (!ths.length || !details.length) return;
+      const isCollapsed = details[0].classList.contains('hidden');
+      
+      if (isCollapsed) {
+        ths.forEach(th => { th.colSpan = spans[groupId]; th.rowSpan = 1; });
+        icons.forEach(icon => icon.classList.replace('fa-plus', 'fa-minus'));
+        summaries.forEach(el => el.classList.add('hidden'));
+        details.forEach(el => el.classList.remove('hidden'));
+      } else {
+        ths.forEach(th => { th.colSpan = 1; th.rowSpan = 2; });
+        icons.forEach(icon => icon.classList.replace('fa-minus', 'fa-plus'));
+        summaries.forEach(el => el.classList.remove('hidden'));
+        details.forEach(el => el.classList.add('hidden'));
+      }
+    };
+
+    function showToast(text, iconClass = 'fa-circle-exclamation', colorClass = 'text-pink-400') {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+      const toastIcon = document.getElementById('toast-icon');
+      if (!toast || !toastText || !toastIcon) return;
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastText.innerText = text;
+      toastIcon.className = `fa-solid ${iconClass} ${colorClass}`;
+
+      toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+      }, 2000);
+    }
+
+    function showApprovalToast(isApproved) {
+      if (isApproved) showToast('班幹部審核通過', 'fa-circle-check', 'text-teal-400');
+      else showToast('班幹部審核中', 'fa-clock', 'text-amber-400');
+    }
+
+    function openPracticeModal() {
+      const modal = document.getElementById('practice-modal');
+      if (!modal || !selectedChallengerId) return;
+
+      const ch = challengersData.find(c => c.id === selectedChallengerId);
+      const contentDiv = document.getElementById('practice-modal-content');
+      
+      const titleSpan = document.getElementById('modal-header-title');
+      if (titleSpan && ch) {
+        titleSpan.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center sm:gap-3">
+            <span class="text-sm sm:text-xl text-slate-600 leading-tight">【${ch.location}】${ch.name}</span>
+            <div class="flex items-center gap-2 mt-1 sm:mt-0">
+              <span class="text-lg sm:text-xl text-[#1e3a8a] font-bold">三十天行持清單</span>
+            </div>
+          </div>
+        `;
+      }
+      
+      const hasCore = ch && ch.uniqueCorePractices && ch.uniqueCorePractices.length > 0;
+      const hasGen = ch && ch.uniqueGeneralPractices && ch.uniqueGeneralPractices.length > 0;
+      
+      if (!hasCore && !hasGen) {
+        contentDiv.innerHTML = `<div class="p-12 text-center text-slate-400 font-medium w-full h-full flex flex-col justify-center items-center"><i class="fa-solid fa-list-check text-4xl mb-4 text-slate-200 block"></i>該挑戰者尚無行持打卡紀錄</div>`;
+      }
+
+      modal.classList.remove('hidden');
+      void modal.offsetWidth; 
+      modal.classList.remove('opacity-0');
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        if (hasCore || hasGen) {
+          renderCharts(ch);
+        }
+      }, 50);
+    }
+
+    function closePracticeModal() {
+      const modal = document.getElementById('practice-modal');
+      if (!modal) return;
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    function toggleCollapseDetail() {
+      if (window.innerWidth < 1024) {
+        document.getElementById('filter-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(() => {
+          selectedChallengerId = null;
+          document.getElementById('challenger-detail').classList.add('hidden');
+          document.getElementById('status-placeholder').classList.remove('hidden');
+          renderChallengersList();
+        }, 300);
+      }
+    }
+
+    function showLoading(isLoading) {
+      const listContainer = document.getElementById('challengers-list');
+      if (isLoading) {
+        listContainer.innerHTML = `
+          <div class="p-12 text-center text-slate-400">
+            <i class="fa-solid fa-spinner fa-spin text-2xl text-blue-500 mb-3"></i>
+            <p class="text-xs font-medium">資料同步中，請稍候...</p>
+          </div>
+        `;
+      }
+    }
+
+    function renderRegionButtons() {
+      const container = document.getElementById('region-buttons-container');
+      if (!container) return;
+
+      let html = '';
+      REGIONS.forEach(r => {
+        const region = r.name;
+        const isSelected = activeRegion === region;
+        const count = region === '全部' ? 
+            challengersData.length : 
+            challengersData.filter(ch => ch.region === region).length;
+
+        const btnClass = isSelected ?
+            'bg-gradient-to-r from-[#3b5bdb] to-[#1e1b4b] text-white font-extrabold shadow-md shadow-indigo-900/20 scale-105' :
+            'bg-blue-50 text-blue-800 hover:bg-blue-100 font-medium shadow-sm active:scale-95';
+
+        html += `
+          <button onclick="switchRegion('${region}')" class="w-full lg:w-auto justify-center px-1 sm:px-2 lg:px-2.5 py-1.5 rounded-full text-[11px] sm:text-xs tracking-wide transition-all duration-200 flex items-center gap-1 ${btnClass} ${r.m} ${r.d}">
+            <span class="whitespace-nowrap">${region}</span>
+            <span class="text-[9px] opacity-70 px-1.5 py-[1px] bg-black/10 rounded-full flex-shrink-0">${count}</span>
+          </button>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function switchRegion(region) {
+      activeRegion = region;
+      filterChallengers();
+    }
+
+    function renderChallengersList() {
+      renderRegionButtons();
+      const listContainer = document.getElementById('challengers-list');
+
+      if (filteredChallengers.length === 0) {
+        listContainer.innerHTML = `
+          <div class="p-12 text-center text-slate-400">
+            <i class="fa-regular fa-folder-open text-2xl mb-2 text-slate-300"></i>
+            <p class="text-xs">【${activeRegion}】尚無學員參與挑戰</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = `<div class="divide-y divide-blue-50">`;
+      let animDelay = 0;
+
+      filteredChallengers.forEach((ch) => {
+        const isSelected = selectedChallengerId === ch.id;
+        const activeClass = isSelected ? 'bg-blue-50/60' : 'bg-transparent hover:bg-white/60';
+        const activeBorder = isSelected ? 'border-l-4 border-blue-500' : 'border-l-4 border-transparent';
+        
+        const isTop3 = ['1', '2', '3'].includes(String(ch.rank).trim());
+        let rankClass = '';
+        if (isTop3) {
+          rankClass = isSelected ? 
+             'bg-gradient-to-br from-yellow-400 to-amber-500 text-white shadow-md shadow-amber-500/30' : 
+             'bg-gradient-to-br from-yellow-200 to-amber-400 text-amber-900 shadow-sm';
+        } else {
+          rankClass = isSelected ? 
+             'bg-gradient-to-br from-[#3b5bdb] to-[#1e1b4b] text-white shadow-sm' : 
+             'bg-blue-100 text-blue-700 shadow-sm';
+        }
+        
+        html += `
+          <button onclick="selectChallenger('${ch.id}')" class="w-full text-left p-4 flex items-center justify-between transition-colors animate-fade-in ${activeClass} ${activeBorder}" style="animation-delay: ${animDelay}ms">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full ${rankClass} flex items-center justify-center font-black text-xs flex-shrink-0">
+                ${ch.rank}
+              </div>
+              <div>
+                <div class="font-bold text-sm text-slate-800">${ch.name}</div>
+                <div class="text-[10px] text-slate-400 mt-0.5 flex flex-col gap-0.5">
+                  <div class="flex items-center gap-1">
+                    <img src="https://paymiou.github.io/paymiou/August/contract.png" class="w-3 h-3 object-contain inline-block"> 完成回饋 ${ch.feedbackCount} 週
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <img src="https://paymiou.github.io/paymiou/August/energy-consumption.png" class="w-3 h-3 object-contain inline-block"> 班幹部審核 ${ch.approvalCount || 0} 週
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-1 sm:gap-2">
+              <div class="text-right flex flex-col items-end">
+                <div class="flex items-baseline gap-0.5">
+                  <span class="text-base font-black italic text-blue-700 leading-none">${ch.totalScore}</span>
+                  <span class="text-[9px] font-bold text-blue-400">PT</span>
+                </div>
+                <div class="flex items-center gap-1.5 text-[9px] font-bold text-slate-400 mt-1">
+                  <div class="flex items-center gap-0.5" title="法語成就">
+                    <img src="https://paymiou.github.io/paymiou/August/shines.png" class="w-3.5 h-3.5 object-contain"> <span>${ch.dharmaCount}</span>
+                  </div>
+                  <div class="flex items-center gap-0.5" title="獲讚積分">
+                    <img src="https://paymiou.github.io/paymiou/August/heart.png" class="w-3.5 h-3.5 object-contain"> <span>${ch.totalLikes}</span>
+                  </div>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-[10px] text-blue-300 ml-1"></i>
+            </div>
+          </button>
+        `;
+        animDelay += 15;
+      });
+      
+      html += `</div>`;
+      listContainer.innerHTML = html;
+    }
+
+    function filterChallengers() {
+      const searchVal = document.getElementById('search-input').value.trim().toLowerCase();
+      filteredChallengers = challengersData.filter(ch => {
+        const isCorrectRegion = activeRegion === '全部' || ch.region === activeRegion;
+        const matchesSearch = ch.name.toLowerCase().includes(searchVal);
+        return isCorrectRegion && matchesSearch;
+      });
+      renderChallengersList();
+    }
+
+    function handleImageError(imgElement, weekNum) {
+      imgElement.onerror = null; 
+      imgElement.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" style="background-color:%23eff6ff;"><rect width="100%" height="100%" fill="%23eff6ff"/><circle cx="400" cy="220" r="60" fill="%23dbeafe"/><path d="M400,180 C415,180 430,200 400,250 C370,200 385,180" fill="%2360a5fa"/><text x="50%" y="340" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18px" font-weight="bold" fill="%231e40af">第 ${weekNum} 週・減塑綠生活</text><text x="50%" y="380" dominant-baseline="middle" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13px" fill="%233b82f6">雲端圖片受限權限，以此示意圖展示</text></svg>`;
+      imgElement.classList.add('opacity-80');
+    }
+
+    function selectChallenger(id) {
+      if (selectedChallengerId === id && window.innerWidth < 1024) {
+        toggleCollapseDetail();
+        return;
+      }
+
+      selectedChallengerId = id;
+      renderChallengersList();
+
+      const ch = challengersData.find(c => c.id === id);
+      if (!ch) return;
+
+      document.getElementById('status-placeholder').classList.add('hidden');
+      const detailContainer = document.getElementById('challenger-detail');
+      detailContainer.classList.remove('hidden');
+
+      document.getElementById('detail-name').innerText = ch.name;
+      document.getElementById('detail-rank-span').innerText = ch.rank;
+      document.getElementById('detail-location').innerHTML = `<i class="fa-solid fa-map-pin mr-1 opacity-70"></i>${ch.location}`;
+      document.getElementById('detail-feedback-count').innerText = ch.feedbackCount;
+      document.getElementById('detail-approval-count').innerText = ch.approvalCount || 0;
+      
+      const rankContainer = document.getElementById('detail-rank-container');
+      const isTop3 = ['1', '2', '3'].includes(String(ch.rank).trim());
+      if (isTop3) {
+        rankContainer.className = "bg-gradient-to-br from-yellow-400 to-amber-500 border border-yellow-200/50 rounded-full flex flex-col items-center justify-center text-white shadow-lg shadow-amber-500/30 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 flex-shrink-0";
+      } else {
+        rankContainer.className = "bg-gradient-to-br from-blue-600 to-indigo-900 border border-indigo-400/30 rounded-full flex flex-col items-center justify-center text-white shadow-lg shadow-indigo-900/20 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 flex-shrink-0";
+      }
+      
+      document.getElementById('detail-score-b').innerText = ch.totalScore || 0;
+      document.getElementById('detail-likes-c').innerText = ch.totalLikes || 0;
+      document.getElementById('detail-dharma-count').innerText = ch.dharmaCount || 0;
+
+      const timeline = document.getElementById('timeline-container');
+      let timelineHtml = '';
+      
+      currentLightboxImages = [];
+      let globalImgIndex = 0;
+      const hasWeeks = ch.weeks && ch.weeks.length > 0;
+
+      if (!hasWeeks) {
+        timelineHtml = `
+          <div class="w-full max-w-2xl relative animate-fade-in">
+            <div class="bg-white rounded-[24px] p-8 sm:p-12 text-center border border-slate-100/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col items-center">
+              <div class="bg-blue-50/50 text-blue-500 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <i class="fa-regular fa-paper-plane text-2xl"></i>
+              </div>
+              <h4 class="text-slate-800 font-black text-lg mb-2">尚未上傳行持紀錄</h4>
+              <p class="text-slate-500 text-sm max-w-xs leading-relaxed font-medium text-center">
+                讓我們一起為他加油 <br> 期待後續的精彩分享！
+              </p>
+            </div>
+          </div>
+        `;
+      } else {
+        ch.weeks.forEach((w, index) => {
+          const formattedText = w.text.replace(/\n/g, '<br>');
+          const weekZh = ['一', '二', '三', '四', '五', '六', '七', '八'][w.week - 1] || w.week;
+          
+          const isApproved = ch.approvedWeeks ? ch.approvedWeeks[w.week] : false;
+          const approvalIconUrl = isApproved ? 
+              "https://paymiou.github.io/paymiou/August/approval.png" : 
+              "https://paymiou.github.io/paymiou/August/Under%20review.png";
+          
+          let imageSection = '';
+          if (w.image) {
+            const imgUrls = w.image.split(',').filter(u => u.trim() !== '');
+            let imgsHtml = '';
+            imgUrls.forEach((imgUrl) => {
+              const capText = `第 ${w.week} 週實踐成果`;
+              currentLightboxImages.push({ src: imgUrl.trim(), caption: capText, week: w.week });
+              
+              const idx = globalImgIndex++;
+              imgsHtml += `
+                <div class="relative group cursor-zoom-in overflow-hidden rounded-xl sm:rounded-[16px] border border-slate-200/60 bg-slate-50 transition-transform hover:scale-[1.02] w-[calc(33.333%-6px)] sm:w-32 aspect-square sm:h-32 flex-shrink-0 shadow-sm" onclick="event.stopPropagation(); openLightbox(${idx})">
+                  <img src="${imgUrl.trim()}" onerror="handleImageError(this, ${w.week})" alt="成果照" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-slate-900/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <span class="bg-black/60 text-white text-[10px] font-bold px-2 py-1 rounded-full backdrop-blur-sm">
+                      <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    </span>
+                  </div>
+                </div>
+              `;
+            });
+            imageSection = `<div class="flex flex-wrap gap-2 sm:gap-3">${imgsHtml}</div>`;
+          }
+
+          let likeBtnHtml = '';
+          const likeKey = `${ch.uid}_w${w.week}`;
+          const hasLiked = myGivenLikes.includes(likeKey);
+          const isMe = isLoggedIn && (ch.uid === userId);
+
+          if (!isLoggedIn) {
+            likeBtnHtml = `<div onclick="event.stopPropagation(); showToast('請先回到主要行動頁登入挑戰，才能取得成果展點讚權限唷！', 'fa-circle-exclamation', 'text-pink-400')" title="未登入系統" class="bg-slate-100 border border-slate-200 rounded-full px-3 sm:px-4 py-1.5 flex items-center gap-1.5 font-bold text-xs sm:text-sm text-slate-400 shadow-sm cursor-pointer hover:bg-slate-200 transition-colors"><span>🤍</span> <span>${w.likes || 0}</span></div>`;
+          } else if (isMe) {
+            likeBtnHtml = `<div onclick="event.stopPropagation(); showToast('不能給自己的週報點讚唷！')" title="自己的週報" class="bg-slate-50 border border-slate-100 rounded-full px-3 sm:px-4 py-1.5 flex items-center gap-1.5 font-bold text-xs sm:text-sm text-slate-400 cursor-not-allowed"><span>❤️</span> <span>${w.likes || 0}</span></div>`;
+          } else if (hasLiked) {
+            likeBtnHtml = `<div onclick="event.stopPropagation(); showToast('這一週您已經點過讚囉！', 'fa-circle-check', 'text-teal-400')" title="已點讚過" class="bg-pink-50 border border-pink-200 rounded-full px-3 sm:px-4 py-1.5 flex items-center gap-1.5 font-bold text-xs sm:text-sm text-pink-500 shadow-sm"><span>❤️</span> <span>${w.likes || 0}</span></div>`;
+          } else {
+            likeBtnHtml = `<div id="like-btn-${likeKey}" onclick="event.stopPropagation(); handle成果PageLike('${ch.uid}', 'w${w.week}', ${w.likes || 0})" title="點擊按讚支持" class="bg-white border border-slate-200 hover:bg-pink-50 hover:text-pink-500 hover:border-pink-200 rounded-full px-3 sm:px-4 py-1.5 flex items-center gap-1.5 font-bold text-xs sm:text-sm text-slate-500 shadow-sm cursor-pointer transition-all active:scale-90"><span>🤍</span> <span id="like-count-${likeKey}">${w.likes || 0}</span></div>`;
+          }
+
+          timelineHtml += `
+            <div class="w-full max-w-2xl relative animate-fade-in" style="animation-delay: ${index * 80}ms">
+              <div class="bg-white rounded-[24px] p-5 sm:p-7 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-slate-100/80 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-shadow flex flex-col text-left">
+                <div class="flex justify-between items-center border-b border-slate-100/60 pb-3 sm:pb-4 mb-4">
+                  <div class="flex items-center gap-1.5 sm:gap-2.5">
+                    <h3 class="text-[#1e3a8a] font-black text-[15px] sm:text-xl tracking-wide">第${weekZh}週實踐章心得</h3>
+                    <img src="${approvalIconUrl}" onclick="event.stopPropagation(); showApprovalToast(${isApproved})" alt="審核狀態" class="w-[50px] sm:w-[60px] h-auto object-contain cursor-pointer active:scale-95 transition-transform" title="${isApproved ? '班幹部審核通過' : '班幹部審核中'}">
+                  </div>
+                  ${likeBtnHtml}
+                </div>
+                <div class="text-[15px] sm:text-[16px] text-slate-700 leading-relaxed font-bold mb-4 whitespace-pre-wrap">${formattedText || '<span class="text-slate-400 italic font-normal">本週僅上傳影像紀錄。</span>'}</div>
+                ${imageSection}
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      timeline.innerHTML = timelineHtml;
+      
+      if (window.innerWidth < 1024) {
+        setTimeout(() => {
+          detailContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
+    }
+
+    function openLightbox(index) {
+      if (currentLightboxImages.length === 0) return;
+      currentLightboxIndex = index;
+      updateLightboxContent();
+      
+      const lb = document.getElementById('lightbox');
+      lb.classList.remove('hidden'); 
+      lb.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function updateLightboxContent() {
+      const img = document.getElementById('lightbox-img');
+      const cap = document.getElementById('lightbox-caption');
+      const data = currentLightboxImages[currentLightboxIndex];
+      if (!img || !cap || !data) return;
+      
+      img.style.opacity = '0';
+      setTimeout(() => {
+        img.src = data.src;
+        img.onerror = function() { handleImageError(this, data.week); };
+        cap.innerText = `${data.caption} (${currentLightboxIndex + 1} / ${currentLightboxImages.length})`;
+        img.onload = () => { img.style.opacity = '1'; };
+      }, 150);
+    }
+    
+    function prevImage(e) {
+      if (e) e.stopPropagation();
+      if (currentLightboxImages.length <= 1) return;
+      currentLightboxIndex = (currentLightboxIndex - 1 + currentLightboxImages.length) % currentLightboxImages.length;
+      updateLightboxContent();
+    }
+
+    function nextImage(e) {
+      if (e) e.stopPropagation();
+      if (currentLightboxImages.length <= 1) return;
+      currentLightboxIndex = (currentLightboxIndex + 1) % currentLightboxImages.length;
+      updateLightboxContent();
+    }
+
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      if (!lb) return;
+      lb.classList.add('hidden'); 
+      lb.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      const lb = document.getElementById('lightbox');
+      if (lb && !lb.classList.contains('hidden')) {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') prevImage();
+        if (e.key === 'ArrowRight') nextImage();
+      }
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const lightboxElem = document.getElementById('lightbox');
+
+    lightboxElem.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, {passive: true});
+
+    lightboxElem.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, {passive: true});
+
+    function handleSwipe() {
+      if (!lightboxElem.classList.contains('hidden')) {
+        const threshold = 40;
+        if (touchStartX - touchEndX > threshold) {
+          nextImage();
+        } else if (touchEndX - touchStartX > threshold) {
+          prevImage();
+        }
+      }
+    }
+
+    window.handle成果PageLike = function(targetUid, weekId, currentLikes) {
+      if (!isLoggedIn || !userId) return;
+      const likeKey = `${targetUid}_${weekId}`;
+      if (myGivenLikes.includes(likeKey)) return;
+
+      myGivenLikes.push(likeKey);
+      
+      const btn = document.getElementById(`like-btn-${likeKey}`);
+      if (btn) {
+        btn.className = "bg-pink-50 border border-pink-200 rounded-full px-3 sm:px-4 py-1.5 flex items-center gap-1.5 font-bold text-xs sm:text-sm text-pink-500 shadow-sm cursor-default";
+        btn.innerHTML = `<span>❤️</span> <span>${currentLikes + 1}</span>`;
+        btn.onclick = (e) => { e.stopPropagation(); showToast('這一週您已經點過讚囉！', 'fa-circle-check', 'text-teal-400'); };
+      }
+
+      callJsonpApi('likeReport', { targetUid: targetUid, weekId: weekId, likerUid: userId }, (res) => {
+        if (res.result === 'success') {
+          showToast('按讚加持成功！數據已同步至雲端排行榜。', 'fa-heart', 'text-pink-500');
+        } else {
+          showToast('按讚同步失敗：' + (res.message || '連線超時'), 'fa-circle-exclamation', 'text-pink-400');
+        }
+      });
+    };
+
+    function callJsonpApi(action, params, onSuccess) {
+      const callbackName = `jsonp_成果_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+      let url = `${API_URL}?action=${action}&callback=${callbackName}&t=${Date.now()}`;
+      Object.keys(params).forEach(key => {
+        url += `&${key}=${encodeURIComponent(params[key])}`;
+      });
+      window[callbackName] = (data) => {
+        delete window[callbackName];
+        if (onSuccess) onSuccess(data);
+      };
+      const script = document.createElement('script');
+      script.src = url;
+      document.body.appendChild(script);
+      script.onload = () => document.body.removeChild(script);
+    }
+  </script>
+</body>
+</html>
