@@ -2012,7 +2012,7 @@
                     setCustomAlert({ title: "字數限制", message: "淨塑行動需介於 3～20 個字之間。" });
                     return;
                 }
-                if (extraTasks.length >= 30) {
+                if (extraTasks.length >= 40) {
                     setCustomAlert({ title: "任務已達上限", message: "自訂項目清單最多僅能存儲 30 則內容，請先完成現有目標。" });
                     return;
                 }
@@ -3440,20 +3440,20 @@
                                                         <img src="https://paymiou.github.io/paymiou/August/plus.png" alt="add icon" className="w-3 h-3 object-contain flex-shrink-0" />
                                                         <span className="text-[12px] font-black text-[#173E98] uppercase tracking-widest">新增更多淨塑行動</span>
                                                     </button>
-                                                    {extraTasks.length >= 30 && <span className="text-[9px] font-black text-red-500 animate-pulse">已達上限</span>}
+                                                    {extraTasks.length >= 40 && <span className="text-[9px] font-black text-red-500 animate-pulse">已達上限</span>}
                                                 </div>
                                                 <div className="flex items-stretch gap-2 w-full">
                                                     <input
                                                         type="text"
                                                         value={customTaskInput}
                                                         onChange={(e) => setCustomTaskInput(e.target.value)}
-                                                        placeholder={currentDay > 30 ? "活動已結束" : extraTasks.length >= 30 ? "已達上限 30 則" : "同樣項目不可重複"}
-                                                        disabled={extraTasks.length >= 30 || currentDay > 30}
+                                                        placeholder={currentDay > 30 ? "活動已結束" : extraTasks.length >= 30 ? "已達上限 40 則" : "同樣項目不可重複"}
+                                                        disabled={extraTasks.length >= 40 || currentDay > 30}
                                                         className="flex-1 min-w-0 bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-[16px] sm:text-[11px] font-bold focus:outline-none focus:border-blue-400 transition-colors shadow-sm disabled:bg-slate-100 disabled:placeholder-slate-400"
                                                     />
                                                     <button
                                                         onClick={() => addCustomTask()}
-                                                        disabled={extraTasks.length >= 30 || currentDay > 30}
+                                                        disabled={extraTasks.length >= 40 || currentDay > 30}
                                                         className="shrink-0 w-[54px] bg-[#173E98] disabled:bg-slate-300 text-white rounded-xl text-[11px] font-black active:scale-95 hover:bg-[#1e46b6] transition-all shadow-sm"
                                                     >
                                                         新增
