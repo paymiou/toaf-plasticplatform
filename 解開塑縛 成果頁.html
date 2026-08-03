@@ -573,7 +573,39 @@
             30: "拿出修行人的大勇猛心，今日不購買也不使用任何塑膠用品。"
         };
 
-        
+        const CORE_PATTERNS = [
+            { id: 1, regex: /徹底拒絕使用塑膠袋/ },
+            { id: 2, regex: /堅持自備環保袋/ },
+            { id: 3, regex: /觀察並減少手中/ },
+            { id: 4, regex: /向身邊至少一位.*宣導/ }, // 🌟 修正：移除 friend，支援「朋友」與各式簡寫
+            { id: 5, regex: /不購買.*不接受.*塑膠包裝/ },
+            { id: 6, regex: /準備兩個以上的淨塑好物/ },
+            { id: 7, regex: /完全不使用一次性塑膠製品/ },
+            { id: 8, regex: /減塑行動.*影響家人/ },
+            { id: 9, regex: /自備環保餐具與容器/ },
+            { id: 10, regex: /微塑膠毒藥/ },
+            { id: 11, regex: /攔截並終結/ },
+            { id: 12, regex: /全面改用玻璃或不鏽鋼/ },
+            { id: 13, regex: /提早準備環保替代方案/ },
+            { id: 14, regex: /環保杯不離身/ },
+            { id: 15, regex: /源頭減量/ },
+            { id: 16, regex: /慈悲心面對.*塑膠/ },
+            { id: 17, regex: /使用塑膠的舊習慣/ },
+            { id: 18, regex: /海洋動物因塑膠/ },
+            { id: 19, regex: /受到塑膠危害的新聞/ },
+            { id: 20, regex: /檢視與覺察使用塑膠的心/ },
+            { id: 21, regex: /塑膠袋應有的正知見/ },
+            { id: 22, regex: /化學毒素與微塑膠/ },
+            { id: 23, regex: /思考我使用塑膠的想法/ },
+            { id: 24, regex: /複合性材質/ },
+            { id: 25, regex: /不用任何一次性塑膠/ },
+            { id: 26, regex: /可以取代塑膠的淨塑好物/ },
+            { id: 27, regex: /正念帶在身上/ },
+            { id: 28, regex: /純淨及嚴謹/ },
+            { id: 29, regex: /塑膠與慈悲心之間的關係/ },
+            { id: 30, regex: /大勇猛心/ }
+        ];
+
         window.onload = function () {
             autoLoginByFingerprint();
             const updateActivity = () => {
@@ -910,7 +942,7 @@
                             }
 
                             items.forEach(part => {
-                                // 1. 去除開頭可能的編號與前後空格（例如 "19. " 或 "★ "）
+                                // 🌟 1. 先去除字串開頭的編號、符號（例如 "1. ", "★ ", "◯ "）
                                 let cleanPart = part
                                     .replace(/^\d+[\.\s、]+/, '')
                                     .replace(/^[-—★◯\s(（]+/, '')
@@ -920,25 +952,43 @@
 
                                 let matchedCoreId = null;
 
-                                // 2. 直接拿 ORACLES_DATA 字典下去精準比對
+                                // 🌟 2. 第一優先：精準比對 ORACLES_DATA 的 30 則標準句文字
                                 for (let id in ORACLES_DATA) {
-                                    if (cleanPart === ORACLES_DATA[id] || cleanPart.includes(ORACLES_DATA[id])) {
+                                    if (cleanPart.includes(ORACLES_DATA[id]) || ORACLES_DATA[id].includes(cleanPart)) {
                                         matchedCoreId = parseInt(id, 10);
                                         break;
                                     }
                                 }
 
-                                // 3. 簡潔二分法歸類：是核心就進核心，不是就進一般！
+                                // 🌟 3. 第二優先：若標準字串沒對上，再走正則關鍵字比對
+                                if (matchedCoreId === null) {
+                                    for (let cp of CORE_PATTERNS) {
+                                        if (cp.regex.test(cleanPart)) {
+                                            matchedCoreId = cp.id;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                // 🌟 4. 分流歸類：若判定為核心任務
                                 if (matchedCoreId !== null) {
                                     let coreText = `${matchedCoreId}. ${ORACLES_DATA[matchedCoreId]}`;
 
-                                    // 放入每日核心項目與個人獨特核心項目（絕不進入 generalCandidates）
                                     if (!challenger.dailyPractices[d].core.includes(coreText)) {
                                         challenger.dailyPractices[d].core.push(coreText);
                                     }
                                     challenger.uniqueCorePractices.add(coreText);
+
+                                    let leftover = cleanPart
+                                        .replace(ORACLES_DATA[matchedCoreId], '')
+                                        .replace(new RegExp(`^${matchedCoreId}\\.\\s*`), '')
+                                        .replace(/^[、,]+|[、,]$/g, '')
+                                        .trim();
+
+                                    if (leftover && leftover.length > 1) {
+                                        generalCandidates.push(leftover);
+                                    }
                                 } else {
-                                    // 只有完全對不上字典的自訂項目，才會進一般項目
                                     generalCandidates.push(cleanPart);
                                 }
                             });
