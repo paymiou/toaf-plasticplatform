@@ -885,15 +885,13 @@
             const syncCustomPocketToCloud = (nextExtraTasks, nextCompletedTasks) => {
                 if (!isLoggedIn || !userId) return;
 
-                // 過濾：只抓出「屬於自訂(不在內建名單)」且「使用者今天還沒打勾完成」的口袋名單
-                const uncompletedCustoms = nextExtraTasks.filter(t =>
-                    !DEFAULT_TASKS.includes(t) && !nextCompletedTasks.includes(t)
-                );
+                // 抓出所有「屬於自訂(不在內建 4 大預設名單中)」的自訂口袋名單
+                const allCustomItems = nextExtraTasks.filter(t => !DEFAULT_TASKS.includes(t));
 
-                // 把這群待辦名單用逗號串起來，即時送到後端 savePocket API
-                callJsonpApi('savePocket', { uid: userId, pocketStr: uncompletedCustoms.join(',') },
-                    (res) => { console.log("FM 欄位暫存同步成功:", res.message); },
-                    (err) => { console.error("FM 欄位同步失敗:", err); }
+                // 把完整的自訂待辦名單用逗號串起來，即時送到後端 savePocket API 存入 FL 欄
+                callJsonpApi('savePocket', { uid: userId, pocketStr: allCustomItems.join(',') },
+                    (res) => { console.log("FL 欄位自訂口袋名單同步成功:", res.message); },
+                    (err) => { console.error("FL 欄位同步失敗:", err); }
                 );
             };
 
@@ -1492,12 +1490,13 @@
                                     setDailyOracle(null);
                                 }
 
-                                // 3. 還原 FM 口袋暫存與已完成項目
+                                // 3. 還原 FM/FL 口袋暫存與已完成項目
                                 let targetCompletedTasks = [];
                                 let currentExtra = [...DEFAULT_TASKS];
 
+                                // 🌟 核心修正：自動連線時，優先把 FL 欄的口袋名單帶入當日畫面
                                 if (data.customPocket && data.customPocket !== "") {
-                                    const pocketItems = String(data.customPocket).split(',').filter(Boolean);
+                                    const pocketItems = String(data.customPocket).split(',').map(s => s.trim()).filter(Boolean);
                                     pocketItems.forEach(pItem => {
                                         if (!currentExtra.includes(pItem)) currentExtra.push(pItem);
                                     });
@@ -1519,6 +1518,7 @@
                                     setSyncedTasks([]);
                                 }
 
+                                // 🌟 更新當日清單狀態
                                 setExtraTasks(currentExtra);
                                 setBaseScore(Number(data.totalScore) || 0);
                                 setReceivedLikesScore(Number(data.receivedLikesScore) || 0);
@@ -2390,8 +2390,9 @@
                                     let targetCompletedTasks = [];
                                     let currentExtra = [...DEFAULT_TASKS];
 
+                                    // 🌟 核心修正：優先載入 FL 欄位 (customPocket) 的長效自訂口袋名單
                                     if (userData.customPocket && userData.customPocket !== "") {
-                                        const pocketItems = String(userData.customPocket).split(',').filter(Boolean);
+                                        const pocketItems = String(userData.customPocket).split(',').map(s => s.trim()).filter(Boolean);
                                         pocketItems.forEach(pItem => {
                                             if (!currentExtra.includes(pItem)) {
                                                 currentExtra.push(pItem);
@@ -2399,12 +2400,14 @@
                                         });
                                     }
 
+                                    // 載入當天已勾選說明的項目
                                     if (userData.todayTasks && userData.todayTasks !== "無" && userData.todayTasks !== "" && userData.todayTasks !== "未完成 any 項目") {
                                         const tasksArr = String(userData.todayTasks).split("、").map(s => s.trim()).filter(x => x && x !== "未完成 any 項目");
                                         setCompletedTasks(tasksArr);
                                         setSyncedTasks(tasksArr);
                                         targetCompletedTasks = tasksArr;
 
+                                        // 保底：若當天勾選的項目不在名單內，也一併補入名單中
                                         tasksArr.forEach(task => {
                                             if (!DEFAULT_TASKS.includes(task) && !currentExtra.includes(task)) {
                                                 currentExtra.push(task);
@@ -2415,6 +2418,7 @@
                                         setSyncedTasks([]);
                                     }
 
+                                    // 🌟 寫入 React 狀態：讓當日渲染列表立即包含 FL 欄的自訂項目！
                                     setExtraTasks(currentExtra);
 
                                     setBaseScore(Number(userData.totalScore) || 0);
