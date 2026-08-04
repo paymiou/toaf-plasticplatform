@@ -642,7 +642,7 @@
         // 終極完美版：超時閒置偵測巡邏哨（徹底修正多分頁閉包陷阱，100% 靈行偵測）
         // ==========================================
         function startTimeoutCheck() {
-            const TIMEOUT_MS = 4 * 60 * 60 * 1000;
+            const TIMEOUT_MS = 12 * 60 * 60 * 1000;
 
             const checkInterval = setInterval(() => {
                 // 🌟 學習重點 1：不認 JS 記憶體變數，直接讀取本機 localStorage 當下最新狀態！
