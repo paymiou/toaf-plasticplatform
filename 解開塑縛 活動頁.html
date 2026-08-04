@@ -155,12 +155,36 @@
         .ui.selection.dropdown .menu {
             border-radius: 0 0 0.75rem 0.75rem !important;
         }
+        body.is-mobile-chrome {
+            padding-top: 56px !important;
+        }
+        body.is-mobile-chrome #tour-score-panel ~ .sticky {
+            top: 56px !important;
+        }
     </style>
 </head>
 
 <body class="bg-slate-100 min-h-screen overflow-x-hidden">
     <div id="root" class="relative"></div>
 
+    <script>
+      // 檢查是否為行動裝置且使用 Chrome
+      function detectMobileChrome() {
+        const ua = navigator.userAgent;
+        
+        // 檢查是否包含 Mobile 且包含 Chrome，同時排除被其他瀏覽器 (如 Edge, Opera) 偽造的情況
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        const isChrome = /Chrome|CriOS/i.test(ua) && !/Edg|OPR|SamsungBrowser/i.test(ua);
+    
+        if (isMobile && isChrome) {
+          // 如果符合條件，給 <body> 標籤加上一個特殊的 class 名稱
+          document.body.classList.add('is-mobile-chrome');
+        }
+      }
+    
+      // 頁面載入時執行
+      document.addEventListener('DOMContentLoaded', detectMobileChrome);
+    </script>
     <script type="text/babel">
         (function () {
             const urlParams = new URLSearchParams(window.location.search);
