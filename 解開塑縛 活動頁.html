@@ -1398,8 +1398,10 @@
 
             // 關鍵：新手自動觸發機制（分數為0且今天沒抽卡）
             useEffect(() => {
-                if (isLoggedIn && baseScore === 0 && dailyOracle === null) {
+                // 必須確定：1.已登入 2.雲端個人資料已完全載入完畢 3.分數確實為0 4.今天沒抽卡
+                if (isLoggedIn && loadedUserId === userId && baseScore === 0 && dailyOracle === null) {
                     const hasSeenTour = localStorage.getItem('has_seen_tour_2026') === 'true';
+                    // 只有當 LocalStorage 確定完全沒有看過紀錄時才自動跳出
                     if (!hasSeenTour) {
                         setTimeout(() => {
                             setActiveTab('daily');
@@ -1407,7 +1409,7 @@
                         }, 800);
                     }
                 }
-            }, [isLoggedIn, baseScore, dailyOracle]);
+            }, [isLoggedIn, loadedUserId, userId, baseScore, dailyOracle]);
 
             // ==========================================
             // 調整安全登出函數（新增 silent 參數支援背景清除）
