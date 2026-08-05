@@ -1711,7 +1711,7 @@
                             setDailyOracle(null);
                             setCompletedTasks([]);
                             setSyncedTasks([]);
-                            setExtraTasks(DEFAULT_TASKS);
+                            setExtraTasks(d.extraTasks && d.extraTasks.length > 0 ? d.extraTasks : DEFAULT_TASKS);
                         }
                     } catch (e) {
                         console.error('LocalStorage parse error:', e);
