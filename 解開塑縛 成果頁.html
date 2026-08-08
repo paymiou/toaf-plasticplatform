@@ -476,8 +476,8 @@
         // ==========================================
         function autoLoginByFingerprint() {
             // 🎯 智慧對接：直接讀取個人挑戰頁設定的 localStorage 標準凭证與 UID
-            const savedLoginStatus = localStorage.getItem('no_plastic_logged_in');
-            const savedUid = localStorage.getItem('no_plastic_user_id');
+            const savedLoginStatus = localStorage.getItem('no_plastic_logged_in') || sessionStorage.getItem('no_plastic_logged_in');
+            const savedUid = localStorage.getItem('no_plastic_user_id') || sessionStorage.getItem('no_plastic_user_id');
 
             if (savedLoginStatus === 'true' && savedUid) {
                 localStorage.setItem('last_activity_time', String(Date.now()));
@@ -540,7 +540,7 @@
         let toastTimeout = null;
 
         // 核心任務字典
-         const ORACLES_DATA = {
+        const ORACLES_DATA = {
             1: "今日徹底拒絕使用塑膠袋。",
             2: "今日出門購物堅持自備環保袋，斷絕任何無心傷害。",
             3: "有意識地觀察並減少手中產生的塑膠廢棄物。",
@@ -646,7 +646,7 @@
 
             const checkInterval = setInterval(() => {
                 // 🌟 學習重點 1：不認 JS 記憶體變數，直接讀取本機 localStorage 當下最新狀態！
-                const hasTokenOnCheck = localStorage.getItem('no_plastic_logged_in') === 'true';
+                const hasTokenOnCheck = localStorage.getItem('no_plastic_logged_in') === 'true' || sessionStorage.getItem('no_plastic_logged_in') === 'true';
 
                 // 如果 localStorage 裡面已經是登出狀態（可能在個人頁按了安全登出），
                 // 成果頁就自動切換回訪客模式，不跳過期視窗
@@ -667,7 +667,7 @@
                 if (lastActivity > 0 && (now - lastActivity <= TIMEOUT_MS)) {
                     // 情況 A：如果時間在 4 小時安全期內，但發現 localStorage 裡的最新 uid 
                     // 竟然跟目前網頁畫面渲染的帳號（全域變數 userId）不同，說明「別的分頁剛重新登入成功」！
-                    const currentGlobalUid = localStorage.getItem('no_plastic_user_id');
+                    const currentGlobalUid = localStorage.getItem('no_plastic_user_id') || sessionStorage.getItem('no_plastic_user_id');
                     if (currentGlobalUid && currentGlobalUid !== userId) {
                         console.log("🔄 偵測到其他分頁已重新登入成功，自動寂靜同步，免跳過期窗。");
                         autoLoginByFingerprint(); // 默默更新按讚資料與變數
@@ -700,7 +700,7 @@
             <div class="bg-white rounded-[32px] p-8 text-center w-full max-w-xs shadow-2xl border border-slate-100 transform scale-100 transition-transform duration-300">
                 <div class="text-4xl mb-4">⚠️</div>
                 <h3 class="text-lg font-black mb-2 text-slate-800">系統通知</h3>
-                <p class="text-xs text-slate-500 leading-relaxed font-medium mb-6 whitespace-pre-line">由於您超過 4 小時未操作網頁，為了安全，系統已自動為您登出。</p>
+                <p class="text-xs text-slate-500 leading-relaxed font-medium mb-6 whitespace-pre-line">由於您超過 12 小時未操作網頁，為了安全，系統已自動為您登出。</p>
                 <button id="timeout-confirm-btn" class="w-full py-4 bg-blue-900 text-white rounded-2xl font-black shadow-lg active:scale-95 transition-transform">
                     確認
                 </button>
@@ -1848,6 +1848,19 @@
             }
         }
 
+        // 失敗回滾機制
+        function rollbackLike(targetUid, weekId, likeKey, originalLikes) {
+            myGivenLikes = myGivenLikes.filter(k => k !== likeKey);
+            const ch = challengersData.find(c => String(c.uid) === String(targetUid));
+            if (ch) {
+                const weekNum = parseInt(weekId.replace('w', ''), 10);
+                const weekObj = ch.weeks.find(w => w.week === weekNum);
+                if (weekObj) weekObj.likes = originalLikes;
+                ch.totalLikes = Math.max(0, (ch.totalLikes || 0) - 1);
+            }
+            if (selectedChallengerId) selectChallenger(selectedChallengerId);
+        }
+
         // ==========================================
         // 優化：成果頁智慧點讚與全域個人頁聯動系統
         // ==========================================
@@ -1857,12 +1870,9 @@
             // 🎯 核心優化 1：如果學員根本沒有登入，觸發防守閘門，拋出提示並自動導流
             if (!isLoggedIn || !userId) {
                 showToast('請登入後再按讚！即將為您導向登入頁面...', 'fa-circle-exclamation', 'text-amber-400');
-
-                // 延遲 1.2 秒給予挑戰者肉眼閱讀時間，隨即將父視窗(或當前分頁)直接導流至個人頁
                 setTimeout(() => {
-                    // GOOGLE_SITES_URL 是個人挑戰頁的位置
                     window.location.href = "https://sites.google.com/view/toafnoplastic/202608?redirect=" + encodeURIComponent(window.location.href);
-                }, 0);
+                }, 1200);
                 return;
             }
 
@@ -1875,8 +1885,7 @@
             // 前端先跑動畫：立刻將愛心渲染為已點讚狀態
             myGivenLikes.push(likeKey);
 
-            // 🎯 核心優化 2：連動大腦！點讚成功時，立刻更新這台手機的 `data_${userId}` 快取檔案
-            // 這樣學員切換回個人挑戰頁時，個人挑戰頁的「排行榜頁籤」才會跟著同步打勾、不會鬧雙胞！
+            // 🎯 核心優化 2：連動大腦！點讚成功時，立刻更新這台手機的快取檔案
             const localDataStr = localStorage.getItem(`data_${userId}`);
             if (localDataStr) {
                 try {
@@ -1886,6 +1895,7 @@
                 } catch (e) { }
             }
 
+            // 🌟 樂觀更新：同步更新畫面上的記憶體數據，防止關閉視窗再打開愛心數字又掉回去
             const btn = document.getElementById(`like-btn-${likeKey}`);
             if (btn) {
                 btn.className = "bg-pink-50 border border-pink-200 rounded-full px-3 sm:px-4 py-1.5 flex items-center gap-1.5 font-bold text-xs sm:text-sm text-pink-500 shadow-sm cursor-default";
@@ -1893,33 +1903,82 @@
                 btn.onclick = (e) => { e.stopPropagation(); showToast('這一週您已經點過讚囉！', 'fa-circle-check', 'text-teal-400'); };
             }
 
-            // 發送訊號給 GAS 後端資料庫，將愛心計數真正寫入試算表
-            callJsonpApi('likeReport', { targetUid: targetUid, weekId: weekId, likerUid: userId }, (res) => {
-                if (res.result === 'success') {
-                    showToast('按讚加持成功！數據已同步至雲端排行榜。', 'fa-heart', 'text-pink-500');
-                } else {
-                    showToast('按讚同步失敗：' + (res.message || '連線超時'), 'fa-circle-exclamation', 'text-pink-400');
-                    // 後端若失敗，前端回滾
-                    myGivenLikes = myGivenLikes.filter(k => k !== likeKey);
-                    if (selectedChallengerId) selectChallenger(selectedChallengerId);
+            const ch = challengersData.find(c => String(c.uid) === String(targetUid));
+            if (ch) {
+                const weekNum = parseInt(weekId.replace('w', ''), 10);
+                const weekObj = ch.weeks.find(w => w.week === weekNum);
+                if (weekObj) weekObj.likes = currentLikes + 1;
+                ch.totalLikes = (ch.totalLikes || 0) + 1;
+
+                if (selectedChallengerId === ch.id) {
+                    const totalLikesEl = document.getElementById('detail-likes-c');
+                    if (totalLikesEl) totalLikesEl.innerText = ch.totalLikes;
                 }
-            });
+                renderChallengersList();
+            }
+
+            // 發送訊號給 GAS 後端資料庫
+            callJsonpApi('likeReport', { targetUid: targetUid, weekId: weekId, likerUid: userId },
+                (res) => {
+                    if (res.result === 'success') {
+                        showToast('按讚加持成功！數據已同步至雲端排行榜。', 'fa-heart', 'text-pink-500');
+                    } else {
+                        showToast('按讚同步失敗：' + (res.message || '伺服器異常'), 'fa-circle-exclamation', 'text-pink-400');
+                        rollbackLike(targetUid, weekId, likeKey, currentLikes);
+                    }
+                },
+                (err) => {
+                    showToast('網路連線異常，按讚未能寫入雲端', 'fa-circle-exclamation', 'text-pink-400');
+                    rollbackLike(targetUid, weekId, likeKey, currentLikes);
+                }
+            );
         };
 
-        function callJsonpApi(action, params, onSuccess) {
-            const callbackName = `jsonp_成果_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+        function callJsonpApi(action, params, onSuccess, onError, retryCount = 0) {
+            // 🌟 修正：拔除中文命名，改用安全的 jsonp_result_ 避免後端解析當機
+            const callbackName = `jsonp_result_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
             let url = `${API_URL}?action=${action}&callback=${callbackName}&t=${Date.now()}`;
+
             Object.keys(params).forEach(key => {
-                url += `&${key}=${encodeURIComponent(params[key])}`;
+                if (params[key] !== undefined && params[key] !== null) {
+                    url += `&${key}=${encodeURIComponent(params[key])}`;
+                }
             });
+
+            let isTimeout = false;
+            const timeoutId = setTimeout(() => {
+                isTimeout = true;
+                delete window[callbackName];
+                if (retryCount < 2) {
+                    callJsonpApi(action, params, onSuccess, onError, retryCount + 1);
+                } else {
+                    if (onError) onError(new Error("伺服器繁忙中"));
+                }
+            }, 25000);
+
             window[callbackName] = (data) => {
+                if (isTimeout) return;
+                clearTimeout(timeoutId);
                 delete window[callbackName];
                 if (onSuccess) onSuccess(data);
             };
+
             const script = document.createElement('script');
             script.src = url;
+            script.onerror = () => {
+                if (isTimeout) return;
+                clearTimeout(timeoutId);
+                delete window[callbackName];
+                if (retryCount < 2) {
+                    callJsonpApi(action, params, onSuccess, onError, retryCount + 1);
+                } else if (onError) {
+                    onError(new Error("網路連線遭拒"));
+                }
+            };
             document.body.appendChild(script);
-            script.onload = () => document.body.removeChild(script);
+            script.onload = () => {
+                if (document.body.contains(script)) document.body.removeChild(script);
+            };
         }
     </script>
 </body>
