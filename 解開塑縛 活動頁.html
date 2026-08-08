@@ -1944,6 +1944,7 @@
             const handleLikeClick = (targetPlayerId, weekId, e) => {
                 e.stopPropagation();
 
+                // 1. 檢查是否在冷卻中
                 if (isLikingRef.current) {
                     showToast('點讚太快囉，請稍等一下下！', 'pending');
                     return;
@@ -1953,8 +1954,15 @@
                 const likeKey = `${targetPlayerId}_${weekId}`;
                 if (myGivenLikes.includes(likeKey)) return;
 
+                // 2. 上鎖！
                 isLikingRef.current = true;
 
+                // 🌟 【關鍵修正 1】：放在外面！點擊後 800 毫秒準時解鎖，絕不等伺服器！
+                setTimeout(() => {
+                    isLikingRef.current = false;
+                }, 800);
+
+                // 3. 樂觀更新：畫面立刻亮起粉紅愛心
                 setMyGivenLikes(prev => [...prev, likeKey]);
                 setRealPlayers(prev => prev.map(p => {
                     if (p.id === targetPlayerId && p.reports && p.reports[weekId]) {
@@ -1963,11 +1971,13 @@
                     return p;
                 }));
 
+                // 4. 背景發送給伺服器 (這段期間使用者已經可以去按別人的讚了)
                 callJsonpApi('likeReport', { targetUid: targetPlayerId, weekId, likerUid: userId },
                     (res) => {
-                        setTimeout(() => { isLikingRef.current = false; }, 800);
+                        // 🌟 【關鍵修正 2】：裡面不需要再放 setTimeout 了
                         if (res.result !== 'success') {
                             setCustomAlert({ title: '按讚未紀錄', message: res.message || '無法連線至伺服器' });
+                            // --- 失敗還原機制 ---
                             setMyGivenLikes(prev => prev.filter(k => k !== likeKey));
                             setRealPlayers(prev => prev.map(p => {
                                 if (p.id === targetPlayerId && p.reports && p.reports[weekId]) {
@@ -1978,8 +1988,9 @@
                         }
                     },
                     (err) => {
-                        setTimeout(() => { isLikingRef.current = false; }, 800);
+                        // 🌟 【關鍵修正 2】：裡面不需要再放 setTimeout 了
                         setCustomAlert({ title: '網路異常', message: '無法連接到雲端，按讚紀錄未能保存。' });
+                        // --- 失敗還原機制 ---
                         setMyGivenLikes(prev => prev.filter(k => k !== likeKey));
                         setRealPlayers(prev => prev.map(p => {
                             if (p.id === targetPlayerId && p.reports && p.reports[weekId]) {
