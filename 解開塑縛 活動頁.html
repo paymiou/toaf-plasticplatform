@@ -3921,7 +3921,7 @@
                                                                                                         return (
                                                                                                             <div
                                                                                                                 key={i}
-                                                                                                                className={`aspect-square bg-slate-100 rounded-lg border border-slate-200 overflow-hidden ${isValidPhoto ? 'cursor-pointer hover:opacity-85' : ''}`}
+                                                                                                                className={`aspect-square bg-slate-100 rounded-lg transform-gpu backface-hidden border border-slate-200 overflow-hidden ${isValidPhoto ? 'cursor-pointer hover:opacity-85' : ''}`}
                                                                                                                 onClick={() => {
                                                                                                                     if (isValidPhoto) {
                                                                                                                         const rawValidPhotos = report.photos.filter(p => p && p !== 'uploaded_photo_url');
@@ -3931,9 +3931,9 @@
                                                                                                                 }}
                                                                                                             >
                                                                                                                 {isValidPhoto ? (
-                                                                                                                    <img src={getDirectImageUrl(photo)} className="w-full h-full object-cover" alt="photo" />
+                                                                                                                    <img src={getDirectImageUrl(photo)} className="w-full h-full object-cover block" alt="photo" />
                                                                                                                 ) : (
-                                                                                                                    <img src="https://paymiou.github.io/paymiou/August/reef.png" className="w-6 h-6 opacity-30 grayscale" alt="placeholder" />
+                                                                                                                    <img src="https://paymiou.github.io/paymiou/August/reef.png" className="w-6 h-6 opacity-30 grayscale block" alt="placeholder" />
                                                                                                                 )}
                                                                                                             </div>
                                                                                                         );
