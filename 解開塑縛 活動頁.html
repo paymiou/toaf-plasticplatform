@@ -206,8 +206,6 @@
 
         const API_URL = "https://script.google.com/macros/s/AKfycbwWf2ONqm7TKsCZBIyzsxIsV4TDTjarrtVm2xtKSvSFnBKYour_Xd3meZ0SDICQRXYVlQ/exec";
 
-        const isLikingRef = useRef(false);
-
         const TOUR_STEPS = [
             {   // 1. 歡迎
                 title: <span className="flex items-center gap-2"><img src="https://paymiou.github.io/paymiou/August/sea.png" className="w-5 h-5 object-contain inline-block" />歡迎加入 解開塑縛 三十無塑實踐！</span>,
@@ -1944,17 +1942,9 @@
 
             const handleLikeClick = (targetPlayerId, weekId, e) => {
                 e.stopPropagation();
-
-                if (isLikingRef.current) {
-                    showToast('點讚太快囉，請稍等一下下！', 'pending');
-                    return;
-                }
-
                 if (targetPlayerId === userId) return;
                 const likeKey = `${targetPlayerId}_${weekId}`;
                 if (myGivenLikes.includes(likeKey)) return;
-
-                isLikingRef.current = true;
 
                 setMyGivenLikes(prev => [...prev, likeKey]);
                 setRealPlayers(prev => prev.map(p => {
@@ -1966,7 +1956,6 @@
 
                 callJsonpApi('likeReport', { targetUid: targetPlayerId, weekId, likerUid: userId },
                     (res) => {
-                        etTimeout(() => { isLikingRef.current = false; }, 800);
                         if (res.result !== 'success') {
                             setCustomAlert({ title: '按讚未紀錄', message: res.message || '無法連線至伺服器' });
                             setMyGivenLikes(prev => prev.filter(k => k !== likeKey));
@@ -1979,7 +1968,6 @@
                         }
                     },
                     (err) => {
-                        setTimeout(() => { isLikingRef.current = false; }, 800);
                         setCustomAlert({ title: '網路異常', message: '無法連接到雲端，按讚紀錄未能保存。' });
                         setMyGivenLikes(prev => prev.filter(k => k !== likeKey));
                         setRealPlayers(prev => prev.map(p => {
