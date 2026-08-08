@@ -767,6 +767,14 @@
 
         const ALL_ORACLE_MISSIONS = ORACLES.map(o => o.mission);
 
+        const cleanExtraTasks = (tasksArr) => {
+            if (!tasksArr) return DEFAULT_TASKS;
+            return tasksArr.filter(t => {
+                const rawText = t.replace(' (加1分)', '').trim();
+                return !ALL_ORACLE_MISSIONS.includes(rawText) && !ALL_ORACLE_MISSIONS.includes(t);
+            });
+        };
+        
         const RANK_LIST = [
             { min: 0, max: 49, stage: "【初心覺醒】", title: "Lv. 1-1 淨塑原點" },
             { min: 50, max: 99, stage: "【初心覺醒】", title: "Lv. 1-2 塑縛覺醒者" },
@@ -913,8 +921,7 @@
                 if (!isLoggedIn || !userId) return;
 
                 // 抓出所有「屬於自訂(不在內建 4 大預設名單中)」的自訂口袋名單
-                const allCustomItems = nextExtraTasks.filter(t => !DEFAULT_TASKS.includes(t) && !ALL_ORACLE_MISSIONS.includes(t));
-
+                const allCustomItems = cleanExtraTasks(nextExtraTasks).filter(t => !DEFAULT_TASKS.includes(t));
                 // 把完整的自訂待辦名單用逗號串起來，即時送到後端 savePocket API 存入 FL 欄
                 callJsonpApi('savePocket', { uid: userId, pocketStr: allCustomItems.join(',') },
                     (res) => { console.log("FL 欄位自訂口袋名單同步成功:", res.message); },
@@ -1547,9 +1554,8 @@
                                     setSyncedTasks([]);
                                 }
 
-                                // 🌟 更新當日清單狀態
-                                currentExtra = currentExtra.filter(t => !ALL_ORACLE_MISSIONS.includes(t));
-                                setExtraTasks(currentExtra);
+                                // 🌟 寫入 React 狀態：讓當日渲染列表立即包含 FL 欄的自訂項目！
+                                setExtraTasks(cleanExtraTasks(currentExtra));
                                 setBaseScore(Number(data.totalScore) || 0);
                                 setReceivedLikesScore(Number(data.receivedLikesScore) || 0);
 
@@ -1705,20 +1711,19 @@
                         setDrawnOracleIds(d.drawnOracleIds || []);
 
                         // 核心安全檢查：如果本機快取日跟今天一樣，大膽啟用快取
-                        // 核心安全檢查：如果本機快取日跟今天一樣，大膽啟用快取
                         if (d.lastOracleDate === todayKey && d.currentOracle) {
                             setDailyOracle(d.currentOracle);
                             setCompletedTasks(d.completedTasks || []);
                             setSyncedTasks(d.syncedTasks || []);
                             if (d.currentDay) setCurrentDay(Number(d.currentDay));
-                            setExtraTasks((d.extraTasks || DEFAULT_TASKS).filter(t => !ALL_ORACLE_MISSIONS.includes(t)));
+                            setExtraTasks(cleanExtraTasks(d.extraTasks || DEFAULT_TASKS));
                             if (d.seenOracleDate === todayKey) setSeenOracleDate(todayKey);
                         } else {
                             // 如果本機快取過期了 (換日了)，主動重置
                             setDailyOracle(null);
                             setCompletedTasks([]);
                             setSyncedTasks([]);
-                            setExtraTasks((d.extraTasks && d.extraTasks.length > 0 ? d.extraTasks : DEFAULT_TASKS).filter(t => !ALL_ORACLE_MISSIONS.includes(t)));
+                            setExtraTasks(cleanExtraTasks(d.extraTasks && d.extraTasks.length > 0 ? d.extraTasks : DEFAULT_TASKS));
                         }
                     } catch (e) {
                         console.error('LocalStorage parse error:', e);
@@ -2478,8 +2483,7 @@
                                     }
 
                                     // 🌟 寫入 React 狀態：讓當日渲染列表立即包含 FL 欄的自訂項目！
-                                    currentExtra = currentExtra.filter(t => !ALL_ORACLE_MISSIONS.includes(t));
-                                    setExtraTasks(currentExtra);
+                                    setExtraTasks(cleanExtraTasks(currentExtra));
 
                                     setBaseScore(Number(userData.totalScore) || 0);
                                     setReceivedLikesScore(Number(userData.receivedLikesScore) || 0);
