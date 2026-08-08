@@ -1965,7 +1965,7 @@
 
                 callJsonpApi('likeReport', { targetUid: targetPlayerId, weekId, likerUid: userId },
                     (res) => {
-                        etTimeout(() => { isLikingRef.current = false; }, 800);
+                        setTimeout(() => { isLikingRef.current = false; }, 800);
                         if (res.result !== 'success') {
                             setCustomAlert({ title: '按讚未紀錄', message: res.message || '無法連線至伺服器' });
                             setMyGivenLikes(prev => prev.filter(k => k !== likeKey));
