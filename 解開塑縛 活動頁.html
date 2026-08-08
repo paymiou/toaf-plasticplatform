@@ -1479,9 +1479,9 @@
                 const now = Date.now();
                 const oneHour = 12 * 60 * 60 * 1000;
 
-                // A. 【超時安全機制】閒置 4 小時強制踢除
+                // A. 【超時安全機制】閒置 12 小時強制踢除
                 if (isLoggedIn && lastActivity > 0 && (now - lastActivity > oneHour)) {
-                    forceLogout("由於您超過 4 小時未操作網頁，為了安全，系統已自動為您登出。");
+                    forceLogout("由於您超過 12 小時未操作網頁，為了安全，系統已自動為您登出。");
                     return;
                 }
 
@@ -1600,7 +1600,7 @@
             }, [isLoggedIn]);
 
             // ==========================================
-            // 優化：超時閒置安全機制與活動時間更新（精準設定為 4 小時強迫登出）
+            // 優化：超時閒置安全機制與活動時間更新（精準設定為 12 小時強迫登出）
             // ==========================================
             useEffect(() => {
                 if (!isLoggedIn) return;
@@ -1650,7 +1650,7 @@
 
                         setCustomAlert({
                             title: "系統通知",
-                            message: "由於您超過 4 小時未操作網頁，為了安全，系統已自動為您登出。",
+                            message: "由於您超過 12 小時未操作網頁，為了安全，系統已自動為您登出。",
                             onConfirm: () => {
                                 setIsLoggedIn(false);
                                 setDailyOracle(null);
