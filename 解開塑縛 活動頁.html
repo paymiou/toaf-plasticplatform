@@ -843,6 +843,7 @@
             const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('no_plastic_logged_in') === 'true' || sessionStorage.getItem('no_plastic_logged_in') === 'true');
             const [userName, setUserName] = useState(() => localStorage.getItem('no_plastic_user_name') || sessionStorage.getItem('no_plastic_user_name') || '');
             const [currentDay, setCurrentDay] = useState(1);
+            const isLikingRef = useRef(false);
 
             const [visibleCount, setVisibleCount] = useState(10); // 預設只顯示 10 筆
 
@@ -1942,9 +1943,17 @@
 
             const handleLikeClick = (targetPlayerId, weekId, e) => {
                 e.stopPropagation();
+
+                if (isLikingRef.current) {
+                    showToast('點讚太快囉，請稍等一下下！', 'pending');
+                    return;
+                }
+
                 if (targetPlayerId === userId) return;
                 const likeKey = `${targetPlayerId}_${weekId}`;
                 if (myGivenLikes.includes(likeKey)) return;
+
+                isLikingRef.current = true;
 
                 setMyGivenLikes(prev => [...prev, likeKey]);
                 setRealPlayers(prev => prev.map(p => {
@@ -1956,6 +1965,7 @@
 
                 callJsonpApi('likeReport', { targetUid: targetPlayerId, weekId, likerUid: userId },
                     (res) => {
+                        etTimeout(() => { isLikingRef.current = false; }, 800);
                         if (res.result !== 'success') {
                             setCustomAlert({ title: '按讚未紀錄', message: res.message || '無法連線至伺服器' });
                             setMyGivenLikes(prev => prev.filter(k => k !== likeKey));
@@ -1968,6 +1978,7 @@
                         }
                     },
                     (err) => {
+                        setTimeout(() => { isLikingRef.current = false; }, 800);
                         setCustomAlert({ title: '網路異常', message: '無法連接到雲端，按讚紀錄未能保存。' });
                         setMyGivenLikes(prev => prev.filter(k => k !== likeKey));
                         setRealPlayers(prev => prev.map(p => {
