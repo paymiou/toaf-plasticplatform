@@ -765,9 +765,12 @@
             if (icon) icon.classList.add('fa-spin');
 
             try {
+                // 🌟 核心破防機制：在網址後方加上隨機的毫秒時間戳記，強制 LINE 瀏覽器放棄快取、重新抓取最新資料！
+                const cacheBuster = `&t=${Date.now()}`;
+
                 const [challengeRes, memberRes] = await Promise.all([
-                    fetch(CHALLENGE_URL),
-                    fetch(MEMBER_URL).catch(() => null)
+                    fetch(CHALLENGE_URL + cacheBuster, { cache: 'no-store' }),
+                    fetch(MEMBER_URL + cacheBuster, { cache: 'no-store' }).catch(() => null)
                 ]);
 
                 if (!challengeRes.ok) throw new Error('挑戰賽資料讀取失敗');
