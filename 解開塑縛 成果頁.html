@@ -490,8 +490,10 @@
                 if (localDataStr) {
                     try {
                         const d = JSON.parse(localDataStr);
-                        // 🎯 核心同步：即時還原該學員在個人頁已經點過的所有按讚(愛心)歷史紀錄！
-                        myGivenLikes = d.myGivenLikes || [];
+                        // 🌟 核心修正：強制還原為陣列！防堵讀到舊版字串格式的歷史紀錄
+                        myGivenLikes = Array.isArray(d.myGivenLikes)
+                            ? d.myGivenLikes
+                            : (typeof d.myGivenLikes === 'string' ? d.myGivenLikes.split(',').filter(Boolean) : []);
                     } catch (e) {
                         myGivenLikes = [];
                     }
@@ -1874,6 +1876,11 @@
                     window.location.href = "https://sites.google.com/view/toafnoplastic/202608?redirect=" + encodeURIComponent(window.location.href);
                 }, 1200);
                 return;
+            }
+
+            // 🌟 核心修正 2：防呆雙重保險，確保操作的一定是陣列
+            if (!Array.isArray(myGivenLikes)) {
+                myGivenLikes = typeof myGivenLikes === 'string' ? myGivenLikes.split(',').filter(Boolean) : [];
             }
 
             // 防呆：已經按過讚就阻斷
