@@ -155,9 +155,11 @@
         .ui.selection.dropdown .menu {
             border-radius: 0 0 0.75rem 0.75rem !important;
         }
+
         body.is-mobile-chrome {
             padding-top: 40px !important;
         }
+
         /* body.is-mobile-chrome #tour-score-panel ~ .sticky {
             top: 56px !important;
         } */
@@ -168,22 +170,22 @@
     <div id="root" class="relative"></div>
 
     <script>
-      // 檢查是否為行動裝置且使用 Chrome
-      function detectMobileChrome() {
-        const ua = navigator.userAgent;
-        
-        // 檢查是否包含 Mobile 且包含 Chrome，同時排除被其他瀏覽器 (如 Edge, Opera) 偽造的情況
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-        const isChrome = /Chrome|CriOS/i.test(ua) && !/Edg|OPR|SamsungBrowser/i.test(ua);
-    
-        if (isMobile && isChrome) {
-          // 如果符合條件，給 <body> 標籤加上一個特殊的 class 名稱
-          document.body.classList.add('is-mobile-chrome');
+        // 檢查是否為行動裝置且使用 Chrome
+        function detectMobileChrome() {
+            const ua = navigator.userAgent;
+
+            // 檢查是否包含 Mobile 且包含 Chrome，同時排除被其他瀏覽器 (如 Edge, Opera) 偽造的情況
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+            const isChrome = /Chrome|CriOS/i.test(ua) && !/Edg|OPR|SamsungBrowser/i.test(ua);
+
+            if (isMobile && isChrome) {
+                // 如果符合條件，給 <body> 標籤加上一個特殊的 class 名稱
+                document.body.classList.add('is-mobile-chrome');
+            }
         }
-      }
-    
-      // 頁面載入時執行
-      document.addEventListener('DOMContentLoaded', detectMobileChrome);
+
+        // 頁面載入時執行
+        document.addEventListener('DOMContentLoaded', detectMobileChrome);
     </script>
     <script type="text/babel">
         (function () {
@@ -774,7 +776,7 @@
                 return !ALL_ORACLE_MISSIONS.includes(rawText) && !ALL_ORACLE_MISSIONS.includes(t);
             });
         };
-        
+
         const RANK_LIST = [
             { min: 0, max: 49, stage: "【初心覺醒】", title: "Lv. 1-1 淨塑原點" },
             { min: 50, max: 99, stage: "【初心覺醒】", title: "Lv. 1-2 塑縛覺醒者" },
@@ -1707,7 +1709,7 @@
                         setLastSavedScore(d.score || 0);
                         setUnlockedItems(d.unlockedItems || []);
                         setWeeklyReports(d.weeklyReports || weeklyReports);
-                        setMyGivenLikes(d.myGivenLikes || []);
+                        setMyGivenLikes(Array.isArray(d.myGivenLikes) ? d.myGivenLikes : (typeof d.myGivenLikes === 'string' ? d.myGivenLikes.split(',').filter(Boolean) : []));
                         setDrawnOracleIds(d.drawnOracleIds || []);
 
                         // 核心安全檢查：如果本機快取日跟今天一樣，大膽啟用快取
@@ -1961,18 +1963,23 @@
 
                 if (targetPlayerId === userId) return;
                 const likeKey = `${targetPlayerId}_${weekId}`;
-                if (myGivenLikes.includes(likeKey)) return;
+
+                // 🌟 修正 1：強制轉為陣列進行嚴格比對，防堵字串誤判 (11 包含 1 的問題)
+                const safeLikes = Array.isArray(myGivenLikes) ? myGivenLikes : (typeof myGivenLikes === 'string' ? myGivenLikes.split(',') : []);
+                if (safeLikes.includes(likeKey)) return;
 
                 // 2. 上鎖！
                 isLikingRef.current = true;
 
-                // 🌟 【關鍵修正 1】：放在外面！點擊後 800 毫秒準時解鎖，絕不等伺服器！
                 setTimeout(() => {
                     isLikingRef.current = false;
                 }, 800);
 
                 // 3. 樂觀更新：畫面立刻亮起粉紅愛心
-                setMyGivenLikes(prev => [...prev, likeKey]);
+                setMyGivenLikes(prev => {
+                    const arr = Array.isArray(prev) ? prev : (typeof prev === 'string' ? prev.split(',') : []);
+                    return [...arr, likeKey];
+                });
                 setRealPlayers(prev => prev.map(p => {
                     if (p.id === targetPlayerId && p.reports && p.reports[weekId]) {
                         return { ...p, reports: { ...p.reports, [weekId]: { ...p.reports[weekId], likes: (p.reports[weekId].likes || 0) + 1 } } };
@@ -1980,14 +1987,16 @@
                     return p;
                 }));
 
-                // 4. 背景發送給伺服器 (這段期間使用者已經可以去按別人的讚了)
+                // 4. 背景發送給伺服器
                 callJsonpApi('likeReport', { targetUid: targetPlayerId, weekId, likerUid: userId },
                     (res) => {
-                        // 🌟 【關鍵修正 2】：裡面不需要再放 setTimeout 了
                         if (res.result !== 'success') {
                             setCustomAlert({ title: '按讚未紀錄', message: res.message || '無法連線至伺服器' });
                             // --- 失敗還原機制 ---
-                            setMyGivenLikes(prev => prev.filter(k => k !== likeKey));
+                            setMyGivenLikes(prev => {
+                                const arr = Array.isArray(prev) ? prev : (typeof prev === 'string' ? prev.split(',') : []);
+                                return arr.filter(k => k !== likeKey);
+                            });
                             setRealPlayers(prev => prev.map(p => {
                                 if (p.id === targetPlayerId && p.reports && p.reports[weekId]) {
                                     return { ...p, reports: { ...p.reports, [weekId]: { ...p.reports[weekId], likes: Math.max(0, (p.reports[weekId].likes || 0) - 1) } } };
@@ -1997,10 +2006,12 @@
                         }
                     },
                     (err) => {
-                        // 🌟 【關鍵修正 2】：裡面不需要再放 setTimeout 了
                         setCustomAlert({ title: '網路異常', message: '無法連接到雲端，按讚紀錄未能保存。' });
                         // --- 失敗還原機制 ---
-                        setMyGivenLikes(prev => prev.filter(k => k !== likeKey));
+                        setMyGivenLikes(prev => {
+                            const arr = Array.isArray(prev) ? prev : (typeof prev === 'string' ? prev.split(',') : []);
+                            return arr.filter(k => k !== likeKey);
+                        });
                         setRealPlayers(prev => prev.map(p => {
                             if (p.id === targetPlayerId && p.reports && p.reports[weekId]) {
                                 return { ...p, reports: { ...p.reports, [weekId]: { ...p.reports[weekId], likes: Math.max(0, (p.reports[weekId].likes || 0) - 1) } } };
@@ -2010,7 +2021,7 @@
                     }
                 );
             };
-
+            
             const activeWeekNotification = useMemo(() => {
                 const openWeeks = WEEKLY_CONFIG.filter(cfg => checkWeekStatus(cfg) === 'open');
                 const unsubmittedOpenWeek = openWeeks.find(cfg => !weeklyReports[cfg.id]?.submitted);
