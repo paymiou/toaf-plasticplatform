@@ -1115,7 +1115,7 @@
                 const myRowData = challengersData.find(c => String(c.uid) === String(userId));
 
                 if (myRowData) {
-                    const myScore = myRowData.totalScore || 0;
+                    let myScore = myRowData.totalScore || 0;
                     const myRank = myRowData.rank || "-";
                     let myName = myRowData.name || "挑戰者";
 
@@ -1125,9 +1125,27 @@
                     }
 
                     let totalReceivedLikes = myRowData.totalLikes || 0;
+                    let dharmaCount = myRowData.dharmaCount || 0;
 
-                    // 智慧法語成就加總
-                    const dharmaCount = myRowData.dharmaCount || 0;
+                    // 🌟 破防機制：強迫讀取本機快取，直接繞過 LINE 的毒瘤延遲快取！
+                    const localDataStr = localStorage.getItem(`data_${userId}`);
+                    if (localDataStr) {
+                        try {
+                            const d = JSON.parse(localDataStr);
+                            // 覆蓋：我獲得的讚數
+                            if (d.receivedLikesScore !== undefined && d.receivedLikesScore > totalReceivedLikes) {
+                                totalReceivedLikes = d.receivedLikesScore;
+                            }
+                            // 覆蓋：總分
+                            if (d.score !== undefined && d.score > myScore) {
+                                myScore = d.score;
+                            }
+                            // 覆蓋：法語成就數量
+                            if (d.unlockedItems && Array.isArray(d.unlockedItems) && d.unlockedItems.length > dharmaCount) {
+                                dharmaCount = d.unlockedItems.length;
+                            }
+                        } catch (e) { }
+                    }
 
                     finalCardContent = `
                         <div onclick="selectChallenger('${myRowData.id}', true); document.getElementById('filter-section').scrollIntoView({ behavior: 'smooth', block: 'start' });" class="w-full flex flex-col items-center justify-center cursor-pointer select-none transition-transform active:scale-[0.99]" title="點擊快速展開我的三十天成果時間軸">
