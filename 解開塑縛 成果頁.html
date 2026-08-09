@@ -1121,13 +1121,7 @@
                         myName = myName.substring(myRowData.className.length).trim();
                     }
 
-                    // 智慧按讚數加總
-                    let totalReceivedLikes = 0;
-                    if (myRowData.reports) {
-                        Object.values(myRowData.reports).forEach(r => {
-                            totalReceivedLikes += (r.likes || 0);
-                        });
-                    }
+                    let totalReceivedLikes = myRowData.totalLikes || 0;
 
                     // 智慧法語成就加總
                     const dharmaCount = myRowData.dharmaCount || 0;
