@@ -1561,6 +1561,19 @@
                                 setBaseScore(Number(data.totalScore) || 0);
                                 setReceivedLikesScore(Number(data.receivedLikesScore) || 0);
 
+                                /* 🌟 修正1：自動登入時解析該 UID 的所有成就清單 */
+                                const cloudUnlockedIds = [
+                                    ...parseIdsStr(data.unlockedIds),
+                                    ...parseIdsStr(data.unlockedOracles),
+                                    ...parseIdsStr(data.achievementsList),
+                                    ...parseIdsStr(data.unlockedItems),
+                                    ...parseIdsStr(data.unlocked)
+                                ];
+                                if (cloudUnlockedIds.length > 0) {
+                                    const uniqueUnlocked = [...new Set(cloudUnlockedIds)].map(id => ({ id }));
+                                    setUnlockedItems(uniqueUnlocked);
+                                }
+
                                 if (data.reports) {
                                     setWeeklyReports(prev => ({ ...prev, ...data.reports }));
                                 }
@@ -1572,7 +1585,7 @@
                                     receivedLikesScore: Number(data.receivedLikesScore) || 0,
                                     completedTasks: targetCompletedTasks,
                                     syncedTasks: targetCompletedTasks,
-                                    unlockedItems: data.reports ? [] : [],
+                                    unlockedItems: cloudUnlockedIds.length > 0 ? [...new Set(cloudUnlockedIds)].map(id => ({ id })) : [],
                                     weeklyReports: data.reports || weeklyReports,
                                     extraTasks: currentExtra,
                                     myGivenLikes: data.myGivenLikes ? String(data.myGivenLikes).split(',').filter(Boolean) : [],
@@ -1583,8 +1596,6 @@
                                 };
                                 localStorage.setItem(`data_${data.uid}`, JSON.stringify(dataToSaveImmediate));
 
-                                // 長效記住憑證安全續期
-                                setSandboxCookie('no_plastic_logged_in', 'true', 30);
                                 localStorage.setItem('last_activity_time', String(Date.now()));
 
                                 setIsLoggedIn(true); // 🌟 指紋識別成功，直接進入系統！
@@ -2021,7 +2032,7 @@
                     }
                 );
             };
-            
+
             const activeWeekNotification = useMemo(() => {
                 const openWeeks = WEEKLY_CONFIG.filter(cfg => checkWeekStatus(cfg) === 'open');
                 const unsubmittedOpenWeek = openWeeks.find(cfg => !weeklyReports[cfg.id]?.submitted);
@@ -2499,6 +2510,19 @@
                                     setBaseScore(Number(userData.totalScore) || 0);
                                     setReceivedLikesScore(Number(userData.receivedLikesScore) || 0);
 
+                                    /* 🌟 修正3：手動登入成功時解析雲端歷史解鎖成就並填入 unlockedItems */
+                                    const cloudUnlockedIds = [
+                                        ...parseIdsStr(userData.unlockedIds),
+                                        ...parseIdsStr(userData.unlockedOracles),
+                                        ...parseIdsStr(userData.achievementsList),
+                                        ...parseIdsStr(userData.unlockedItems),
+                                        ...parseIdsStr(userData.unlocked)
+                                    ];
+                                    if (cloudUnlockedIds.length > 0) {
+                                        const uniqueUnlocked = [...new Set(cloudUnlockedIds)].map(id => ({ id }));
+                                        setUnlockedItems(uniqueUnlocked);
+                                    }
+
                                     let targetDrawnIds = [];
                                     if (userData.drawnOracleIds) {
                                         targetDrawnIds = String(userData.drawnOracleIds).split(',').map(Number).filter(Boolean);
@@ -2515,7 +2539,7 @@
                                         receivedLikesScore: Number(userData.receivedLikesScore) || 0,
                                         completedTasks: targetCompletedTasks,
                                         syncedTasks: targetCompletedTasks,
-                                        unlockedItems: userData.reports ? [] : [],
+                                        unlockedItems: cloudUnlockedIds.length > 0 ? [...new Set(cloudUnlockedIds)].map(id => ({ id })) : [],
                                         weeklyReports: userData.reports || weeklyReports,
                                         extraTasks: currentExtra,
                                         myGivenLikes: userData.myGivenLikes ? String(userData.myGivenLikes).split(',').filter(Boolean) : [],
