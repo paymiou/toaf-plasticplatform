@@ -851,6 +851,164 @@
             );
         };
 
+        // ==========================================
+        // 1. 放在 App 元件上方：排行榜獨立卡片元件 (React.memo)
+        // ==========================================
+        const LeaderboardItem = React.memo(({
+            player,
+            isExpanded,
+            onToggleExpand,
+            onLike,
+            isMe,
+            myGivenLikes,
+            WEEKLY_CONFIG,
+            getDirectImageUrl,
+            setLightbox,
+            showToast,
+            getRankInfo,
+            Icons
+        }) => {
+            const pRank = getRankInfo(player.baseScore);
+            const isTop3 = player.displayRank <= 3;
+
+            const playerLikes = isMe
+                ? player.receivedLikes
+                : Object.values(player.reports || {}).reduce((sum, r) => sum + (r.likes || 0), 0);
+
+            const submittedReports = Object.keys(player.reports || {})
+                .filter(weekId => player.reports[weekId].submitted)
+                .map(weekId => ({ weekId, ...player.reports[weekId] }));
+
+            let rankStyles = "bg-white border-slate-100 shadow-sm";
+            let textPrimary = "text-slate-800";
+            let textSecondary = "text-slate-400";
+            let scoreColor = "text-slate-800";
+
+            if (player.displayRank === 1) {
+                rankStyles = "bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 shadow-amber-200 shadow-lg scale-[1.01] border-amber-300";
+                textPrimary = "text-white"; textSecondary = "text-amber-100"; scoreColor = "text-white";
+            } else if (player.displayRank === 2) {
+                rankStyles = "bg-gradient-to-r from-slate-300 via-slate-400 to-slate-500 shadow-slate-200 shadow-md border-slate-200";
+                textPrimary = "text-white"; textSecondary = "text-slate-100"; scoreColor = "text-white";
+            } else if (player.displayRank === 3) {
+                rankStyles = "bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 shadow-orange-200 shadow-md border-orange-300";
+                textPrimary = "text-white"; textSecondary = "text-orange-100"; scoreColor = "text-white";
+            } else if (player.isSelf) {
+                rankStyles = "bg-blue-900 border-blue-900 shadow-blue-200 shadow-lg ring-4 ring-blue-100";
+                textPrimary = "text-white"; textSecondary = "text-blue-200"; scoreColor = "text-white";
+            }
+
+            return (
+                <div id={player.isSelf ? "leaderboard-self" : undefined} className="transition-all duration-300 text-left">
+                    <div
+                        onClick={onToggleExpand}
+                        className={`flex items-center gap-3 py-2.5 px-4 rounded-xl border transition-all relative overflow-hidden cursor-pointer ${rankStyles} ${isExpanded ? 'rounded-b-none border-b-0' : ''}`}
+                    >
+                        <div className="flex flex-col items-center justify-center w-8 relative">
+                            <span className={`text-xs font-black italic ${isTop3 ? 'text-white text-base' : player.isSelf ? 'text-white' : 'text-slate-300'}`}>
+                                {player.displayRank}
+                            </span>
+                        </div>
+                        <div className="flex-1 text-left">
+                            <div className="flex items-center gap-1.5">
+                                <span className={`text-[13px] font-black tracking-wide ${textPrimary}`}>
+                                    {player.className ? `${player.className} ` : ""}{player.name}
+                                </span>
+                                {player.isSelf && <span className={`${isTop3 ? 'bg-white/20' : 'bg-white'} ${isTop3 ? 'text-white' : 'text-blue-900'} text-[8px] px-1.5 py-0.5 rounded font-black uppercase tracking-tighter`}>ME</span>}
+                            </div>
+                            <p className={`text-[9px] font-bold ${textSecondary}`}>{pRank.title}</p>
+                        </div>
+                        <div className="text-right flex flex-col items-end justify-center">
+                            <div className="flex items-center justify-end gap-1 mb-0.5">
+                                <span className={`text-[15px] font-black italic tracking-tighter ${scoreColor}`}>{player.baseScore}</span>
+                                <span className={`text-[7px] font-black uppercase tracking-tighter opacity-60 ${scoreColor}`}>PT</span>
+                            </div>
+                            <div className={`flex items-center justify-end gap-1.5 text-[8px] font-black ${isTop3 || player.isSelf ? 'text-white/90' : 'text-slate-400'}`}>
+                                <span className="flex items-center gap-0.5"><Icons.Sparkles /> {player.achievements}</span>
+                                <span className="flex items-center gap-0.5"><span className="text-[7px] opacity-80">❤️</span> {playerLikes}</span>
+                            </div>
+                            <div className={`mt-0.5 text-[8px] transition-transform ${isExpanded ? 'rotate-180' : ''} ${isTop3 || player.isSelf ? 'text-white/60' : 'text-slate-300'}`}>
+                                ▼
+                            </div>
+                        </div>
+                    </div>
+
+                    {isExpanded && (
+                        <div className="p-3.5 bg-slate-50 border border-t-0 border-slate-200 rounded-b-xl shadow-inner animate-fade-in text-left">
+                            {submittedReports.length === 0 ? (
+                                <p className="text-center text-xs text-slate-400 font-bold py-4">這位玩家尚無公開的回饋紀錄</p>
+                            ) : (
+                                <div className="space-y-4">
+                                    {submittedReports.map(report => {
+                                        const weekConfig = WEEKLY_CONFIG.find(w => w.id === report.weekId);
+                                        const likeKey = `${player.id}_${report.weekId}`;
+                                        const hasLiked = myGivenLikes.includes(likeKey);
+
+                                        return (
+                                            <div key={report.weekId} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-left">
+                                                <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-50">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-xs font-black text-[#173E98]">{weekConfig?.title}心得</span>
+                                                        <img
+                                                            src={(report.approved === true || String(report.approved).trim().toUpperCase() === 'V') ? "https://paymiou.github.io/paymiou/August/approval.png" : "https://paymiou.github.io/paymiou/August/Under%20review.png"}
+                                                            className="h-[18px] object-contain drop-shadow-sm cursor-pointer hover:scale-110 transition-transform active:scale-95"
+                                                            alt="status"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                const isApproved = (report.approved === true || String(report.approved).trim().toUpperCase() === 'V');
+                                                                showToast(isApproved ? '班幹部審核通過' : '班幹部審核中', isApproved ? 'approved' : 'pending');
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <button
+                                                        onClick={(e) => onLike(player.id, report.weekId, e)}
+                                                        disabled={isMe || hasLiked}
+                                                        className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black transition-all ${isMe ? 'bg-slate-100 text-slate-400 cursor-not-allowed' :
+                                                            hasLiked ? 'bg-pink-50 text-pink-500 border border-pink-200' : 'bg-slate-100 text-slate-500 hover:bg-pink-50 hover:text-pink-500 active:scale-90'
+                                                            }`}
+                                                    >
+                                                        <span className={hasLiked ? 'text-pink-500' : 'text-slate-400'}>{hasLiked ? '❤️' : '🤍'}</span>
+                                                        <span>{report.likes || 0}</span>
+                                                    </button>
+                                                </div>
+                                                <p className="text-[12px] text-slate-700 font-bold leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere text-justify mb-3">
+                                                    {report.content}
+                                                </p>
+                                                <div className="grid grid-cols-3 gap-2">
+                                                    {report.photos.map((photo, i) => {
+                                                        const isValidPhoto = photo && photo !== 'uploaded_photo_url';
+                                                        return (
+                                                            <div
+                                                                key={i}
+                                                                className={`aspect-square bg-slate-100 rounded-lg flex items-center justify-center border border-slate-200 overflow-hidden ${isValidPhoto ? 'cursor-pointer hover:opacity-85' : ''}`}
+                                                                onClick={() => {
+                                                                    if (isValidPhoto) {
+                                                                        const rawValidPhotos = report.photos.filter(p => p && p !== 'uploaded_photo_url');
+                                                                        const validPhotos = rawValidPhotos.map(getDirectImageUrl);
+                                                                        setLightbox({ isOpen: true, photos: validPhotos, currentIndex: rawValidPhotos.indexOf(photo) });
+                                                                    }
+                                                                }}
+                                                            >
+                                                                {isValidPhoto ? (
+                                                                    <img src={getDirectImageUrl(photo)} className="w-full h-full object-cover" alt="photo" />
+                                                                ) : (
+                                                                    <img src="https://paymiou.github.io/paymiou/August/reef.png" className="w-6 h-6 opacity-30 grayscale" alt="placeholder" />
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            );
+        });
+
         const App = () => {
 
             const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('no_plastic_logged_in') === 'true' || sessionStorage.getItem('no_plastic_logged_in') === 'true');
@@ -3876,16 +4034,19 @@
                                                 // 🎯 [新加入的步驟 2]：外面多包一層 <div>，把裁切後的清單與按鈕裝在一起
                                                 return (
                                                     <div className="space-y-2.5">
-
-                                                        {/* 🎯 改用我們在 useMemo 算好的 displayRank 來呈現名次與判斷 Top 3 流光 */}
                                                         {slicedLeaderboard.map((player) => {
                                                             const pRank = getRankInfo(player.baseScore);
-
-                                                            // 🏆 真正統一成果頁：Top 3 改用「名次數字」來認，而不是看陣列順序！
-                                                            // 這樣如果名次是並列第一，兩個人都會發出金黃色流光！
                                                             const isTop3 = player.displayRank <= 3;
+                                                            const isExpanded = expandedPlayerId === player.id;
+                                                            const isMe = player.isSelf;
 
-                                                            let rankStyles = "";
+                                                            // 計算點讚數
+                                                            const playerLikes = isMe
+                                                                ? receivedLikesScore
+                                                                : Object.values(player.reports || {}).reduce((sum, r) => sum + (r.likes || 0), 0);
+
+                                                            // 卡片外觀樣式
+                                                            let rankStyles = "bg-white border-slate-100 shadow-sm";
                                                             let textPrimary = "text-slate-800";
                                                             let textSecondary = "text-slate-400";
                                                             let scoreColor = "text-slate-800";
@@ -3902,25 +4063,26 @@
                                                             } else if (player.isSelf) {
                                                                 rankStyles = "bg-blue-900 border-blue-900 shadow-blue-200 shadow-lg ring-4 ring-blue-100";
                                                                 textPrimary = "text-white"; textSecondary = "text-blue-200"; scoreColor = "text-white";
-                                                            } else {
-                                                                rankStyles = "bg-white border-slate-100 shadow-sm";
                                                             }
 
-                                                            const isExpanded = expandedPlayerId === player.id;
-                                                            const playerLikes = player.isSelf ? receivedLikesScore : Object.values(player.reports || {}).reduce((sum, r) => sum + (r.likes || 0), 0);
-                                                            const submittedReports = Object.keys(player.reports || {})
-                                                                .filter(weekId => player.reports[weekId].submitted)
-                                                                .map(weekId => ({ weekId, ...player.reports[weekId] }));
+                                                            // 只在展開時才過濾週報資料，未展開時陣列保持為空
+                                                            const submittedReports = isExpanded
+                                                                ? Object.keys(player.reports || {})
+                                                                    .filter(weekId => player.reports[weekId] && player.reports[weekId].submitted)
+                                                                    .map(weekId => ({ weekId, ...player.reports[weekId] }))
+                                                                : [];
 
                                                             return (
                                                                 <div key={player.id} id={player.isSelf ? "leaderboard-self" : undefined} className="transition-all duration-300 text-left">
+                                                                    {/* 輕量卡片外殼：永遠優先繪製 */}
                                                                     <div
                                                                         onClick={() => setExpandedPlayerId(isExpanded ? null : player.id)}
                                                                         className={`flex items-center gap-3 py-2.5 px-4 rounded-xl border transition-all relative overflow-hidden cursor-pointer ${rankStyles} ${isExpanded ? 'rounded-b-none border-b-0' : ''}`}
                                                                     >
                                                                         <div className="flex flex-col items-center justify-center w-8 relative">
-                                                                            {/* 🎯 這裡正式將 index + 1 改為 player.displayRank */}
-                                                                            <span className={`text-xs font-black italic ${isTop3 ? 'text-white text-base' : player.isSelf ? 'text-white' : 'text-slate-300'}`}>{player.displayRank}</span>
+                                                                            <span className={`text-xs font-black italic ${isTop3 ? 'text-white text-base' : player.isSelf ? 'text-white' : 'text-slate-300'}`}>
+                                                                                {player.displayRank}
+                                                                            </span>
                                                                         </div>
                                                                         <div className="flex-1 text-left">
                                                                             <div className="flex items-center gap-1.5">
@@ -3946,6 +4108,7 @@
                                                                         </div>
                                                                     </div>
 
+                                                                    {/* 防當機的核心：只有當 isExpanded 為 true 時，才載入內層心得與圖片 DOM */}
                                                                     {isExpanded && (
                                                                         <div className="p-3.5 bg-slate-50 border border-t-0 border-slate-200 rounded-b-xl shadow-inner animate-fade-in text-left">
                                                                             {submittedReports.length === 0 ? (
@@ -3956,7 +4119,6 @@
                                                                                         const weekConfig = WEEKLY_CONFIG.find(w => w.id === report.weekId);
                                                                                         const likeKey = `${player.id}_${report.weekId}`;
                                                                                         const hasLiked = myGivenLikes.includes(likeKey);
-                                                                                        const isMe = player.isSelf;
 
                                                                                         return (
                                                                                             <div key={report.weekId} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-left">
@@ -3967,7 +4129,6 @@
                                                                                                             src={(report.approved === true || String(report.approved).trim().toUpperCase() === 'V') ? "https://paymiou.github.io/paymiou/August/approval.png" : "https://paymiou.github.io/paymiou/August/Under%20review.png"}
                                                                                                             className="h-[18px] object-contain drop-shadow-sm cursor-pointer hover:scale-110 transition-transform active:scale-95"
                                                                                                             alt="status"
-                                                                                                            title="點擊查看狀態"
                                                                                                             onClick={(e) => {
                                                                                                                 e.stopPropagation();
                                                                                                                 const isApproved = (report.approved === true || String(report.approved).trim().toUpperCase() === 'V');
@@ -3990,7 +4151,7 @@
                                                                                                     {report.content}
                                                                                                 </p>
                                                                                                 <div className="grid grid-cols-3 gap-2">
-                                                                                                    {report.photos.map((photo, i) => {
+                                                                                                    {(report.photos || []).map((photo, i) => {
                                                                                                         const isValidPhoto = photo && photo !== 'uploaded_photo_url';
                                                                                                         return (
                                                                                                             <div
@@ -4023,20 +4184,6 @@
                                                                 </div>
                                                             );
                                                         })}
-
-                                                        {/* 🎯 [全新修改]：拔除傳統點擊按鈕，改為 IG 式滑動底部提示線 */}
-                                                        {displayLeaderboard.length > visibleCount ? (
-                                                            <div className="py-6 text-center text-slate-400 font-bold text-[11px] tracking-widest animate-pulse flex items-center justify-center gap-2">
-                                                                <div className="w-3 border-t border-slate-200"></div>
-                                                                <span>⏳ 往下捲動自動加載挑戰者 (還有 {displayLeaderboard.length - visibleCount} 筆)</span>
-                                                                <div className="w-3 border-t border-slate-200"></div>
-                                                            </div>
-                                                        ) : (
-                                                            <div className="py-6 text-center text-slate-300 font-bold text-[10px] tracking-[0.2em] uppercase">
-                                                                ✨ 已載入全數挑戰者名單 ✨
-                                                            </div>
-                                                        )}
-
                                                     </div>
                                                 );
                                             })()
