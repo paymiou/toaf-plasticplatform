@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>藍色微光：微米之間的善念迴圈 - 慈心淨塑互動遊戲</title>
+  <style>
+    :root {
+      --bg-dark: #08121e;
+      --ocean-blue: #1d4ed8;
+      --card-bg: rgba(15, 23, 42, 0.9);
+      --accent-gold: #f59e0b;
+      --eco-green: #10b981;
+      --danger-red: #ef4444;
+      --text-light: #f8fafc;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    #game-container {
+      position: relative;
+      width: 960px;
+      height: 600px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    canvas {
+      display: block;
+      background: linear-gradient(to bottom, #0f2b48, #050d1a);
+    }
+    .hud-layer {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px;
+    }
+    .hud-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+    .light-meter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      color: var(--accent-gold);
+    }
+    .meter-bar {
+      width: 150px;
+      height: 12px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .meter-fill {
+      width: 20%;
+      height: 100%;
+      background: var(--accent-gold);
+      transition: width 0.5s ease;
+    }
+    .overlay-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(8, 18, 30, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      text-align: center;
+      pointer-events: auto;
+      transition: opacity 0.4s ease;
+    }
+    .overlay-modal.hidden { opacity: 0; pointer-events: none; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    h2 { font-size: 1.8rem; margin-bottom: 12px; color: #38bdf8; }
+    p { font-size: 1rem; line-height: 1.7; color: #94a3b8; margin-bottom: 24px; }
+    .choice-group { display: flex; flex-direction: column; gap: 12px; }
+    .btn-choice {
+      background: rgba(255,255,255,0.05);
+      color: var(--text-light);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.25s ease;
+    }
+    .btn-choice:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+    }
+    .btn-good {
+      border-color: var(--eco-green);
+      background: rgba(16, 185, 129, 0.1);
+    }
+    .btn-good:hover {
+      background: rgba(16, 185, 129, 0.25);
+    }
+    .tzuchi-badge {
+      display: inline-block;
+      margin-top: 15px;
+      font-size: 0.85rem;
+      color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="game-container">
+  <canvas id="canvas" width="960" height="600"></canvas>
+  
+  <div class="hud-layer">
+    <div class="hud-header">
+      <div>棲息地：小琉球海域 (綠蠵龜視角)</div>
+      <div class="light-meter">
+        <span>慈心善念心燈：</span>
+        <div class="meter-bar"><div id="light-fill" class="meter-fill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 序章：進入視角 -->
+  <div id="modal-start" class="overlay-modal">
+    <div class="card">
+      <h2>序章：透光的湛藍海域</h2>
+      <p>你是一隻棲息於小琉球海岸的綠蠵龜。<br>陽光透過水面灑下，周圍飄浮著看起來美味的「水母」。<br><br><b>[操作指南]</b> 移動滑鼠引導游動，擺動雙槳進行覓食。</p>
+      <button class="btn-choice btn-good" onclick="startGame()">點亮心燈，開始體驗</button>
+    </div>
+  </div>
+
+  <!-- 第一章轉折：因果相連 -->
+  <div id="modal-p1" class="overlay-modal hidden">
+    <div class="card">
+      <h2 style="color: var(--danger-red);">胃部的微米梗阻...</h2>
+      <p>你吞下的並非水母，而是經過海水漂流碎裂的<b>一次性塑膠袋與手搖飲封口膜</b>。<br>它的異物感沉重地押在你的胃裡，游動手感變得無比遲緩...</p>
+      <div class="choice-group">
+        <button class="btn-choice" onclick="triggerTimeLoop()">進入【時間迴廊】：回到陸地源頭尋找解法</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 第二章：陸地上的造善抉擇 (慈心精神) -->
+  <div id="modal-loop" class="overlay-modal hidden">
+    <div class="card">
+      <h2>時空節點：2026 年的日常早餐店</h2>
+      <p>歷史不會憑空改變，除非你在源頭種下善的種子。<br>當你準備買一杯早餐手搖飲與餐點時，你決定：</p>
+      <div class="choice-group">
+        <button class="btn-choice" onclick="makeKarmaChoice(false)">順手接過店家給的一次性塑膠袋與塑膠吸管 (圖方便)</button>
+        <button class="btn-choice btn-good" onclick="makeKarmaChoice(true)">響應慈心「沒塑就來」：自備環保杯與購物袋，點亮源頭減量心燈！</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 終章：善念的漣漪 -->
+  <div id="modal-end" class="overlay-modal hidden">
+    <div class="card">
+      <h2 id="end-title">因果翻轉：萬物共存</h2>
+      <p id="end-desc"></p>
+      <div class="tzuchi-badge">🌱 慈心基金會：日常的一個微小造善選擇，都是遠方海洋生物重獲新生的契機。</div>
+      <br><br>
+      <button class="btn-choice btn-good" onclick="restartGame()">再次啟程，傳遞善念</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  let active = false;
+  let mouse = { x: 480, y: 300 };
+  let turtle = { x: 480, y: 300, speed: 0.06, size: 28, eatenPlastic: 0 };
+  let items = [];
+  let karmaPoints = 20;
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+
+  function startGame() {
+    document.getElementById('modal-start').classList.add('hidden');
+    active = true;
+    spawnItems();
+    requestAnimationFrame(loop);
+  }
+
+  function spawnItems() {
+    items = [];
+    for (let i = 0; i < 7; i++) {
+      items.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        isPlastic: Math.random() > 0.3, // 70% 假水母 (塑膠)
+        size: Math.random() * 8 + 14,
+        pulse: Math.random() * Math.PI
+      });
+    }
+  }
+
+  function loop() {
+    if (!active) return;
+
+    // 清除畫布，動態水底光影
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 污染度背景混合
+    if (turtle.eatenPlastic > 0) {
+      ctx.fillStyle = `rgba(15, 10, 20, ${turtle.eatenPlastic * 0.25})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // 平滑游動物理
+    turtle.x += (mouse.x - turtle.x) * turtle.speed;
+    turtle.y += (mouse.y - turtle.y) * turtle.speed;
+
+    // 繪製海龜
+    ctx.save();
+    ctx.translate(turtle.x, turtle.y);
+    let angle = Math.atan2(mouse.y - turtle.y, mouse.x - turtle.x);
+    ctx.rotate(angle);
+
+    // 龜殼 (顏色隨健康變化)
+    ctx.fillStyle = turtle.eatenPlastic > 1 ? "#4b5563" : "#10b981";
+    ctx.beginPath();
+    ctx.ellipse(0, 0, turtle.size, turtle.size * 0.65, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 划槳鰭腳
+    ctx.fillStyle = "#059669";
+    ctx.beginPath();
+    ctx.ellipse(8, -18, 14, 6, Math.PI / 4, 0, Math.PI * 2);
+    ctx.ellipse(8, 18, 14, 6, -Math.PI / 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+
+    // 繪製浮游漂流物 (水母 vs 塑膠袋錯覺)
+    items.forEach((item, index) => {
+      item.pulse += 0.04;
+      let floatY = item.y + Math.sin(item.pulse) * 4;
+
+      ctx.save();
+      if (item.isPlastic) {
+        // 透明塑膠袋 (半透明模糊)
+        ctx.fillStyle = "rgba(241, 245, 249, 0.45)";
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.beginPath();
+        ctx.arc(item.x, floatY, item.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      } else {
+        // 真水母 (溫暖藍光)
+        ctx.fillStyle = "rgba(56, 189, 248, 0.75)";
+        ctx.beginPath();
+        ctx.arc(item.x, floatY, item.size * 0.75, Math.PI, 0);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // 碰撞偵測
+      let dist = Math.hypot(turtle.x - item.x, turtle.y - floatY);
+      if (dist < turtle.size + item.size) {
+        if (item.isPlastic) {
+          turtle.eatenPlastic++;
+          turtle.speed = Math.max(0.015, turtle.speed - 0.015); // 手感變重
+        }
+        
+        // 重置被吃掉的物品
+        items[index] = {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          isPlastic: Math.random() > 0.3,
+          size: Math.random() * 8 + 14,
+          pulse: Math.random() * Math.PI
+        };
+
+        if (turtle.eatenPlastic >= 2) {
+          active = false;
+          document.getElementById('modal-p1').classList.remove('hidden');
+        }
+      }
+    });
+
+    requestAnimationFrame(loop);
+  }
+
+  function triggerTimeLoop() {
+    document.getElementById('modal-p1').classList.add('hidden');
+    document.getElementById('modal-loop').classList.remove('hidden');
+  }
+
+  function makeKarmaChoice(isGood) {
+    document.getElementById('modal-loop').classList.add('hidden');
+    let endTitle = document.getElementById('end-title');
+    let endDesc = document.getElementById('end-desc');
+
+    if (isGood) {
+      karmaPoints = 100;
+      document.getElementById('light-fill').style.width = '100%';
+      endTitle.innerText = "🌟 造善成功：心燈照亮大海";
+      endTitle.style.color = "#10b981";
+      endDesc.innerHTML = "因為你在陸地上的每一次堅持，源頭成功攔截了一顆塑膠袋與吸管。<br><br>在大海的另一端，海龜胃裡的重壓消失了！牠重新振翅，帶著光芒悠游於蔚藍之中。";
+    } else {
+      karmaPoints = 10;
+      document.getElementById('light-fill').style.width = '10%';
+      endTitle.innerText = "💔 便利的迴圈";
+      endTitle.style.color = "#ef4444";
+      endDesc.innerHTML = "一次性的便利，會在自然界留下數百年的傷痕。<br><br>海龜帶著重壓在混濁的水中游動... 但請記住，每一次走進超商，我們都有重新選擇『造善』的機會！";
+    }
+
+    document.getElementById('modal-end').classList.remove('hidden');
+  }
+
+  function restartGame() {
+    turtle = { x: 480, y: 300, speed: 0.06, size: 28, eatenPlastic: 0 };
+    karmaPoints = 20;
+    document.getElementById('light-fill').style.width = '20%';
+    document.getElementById('modal-end').classList.add('hidden');
+    startGame();
+  }
+</script>
+
+</body>
+</html>
