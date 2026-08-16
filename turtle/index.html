@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>藍色微光：微米之間的善念迴圈 - 慈心淨塑互動遊戲</title>
+  <title>藍色遞迴：沒塑就來 - 慈心硬核環境解謎</title>
   <style>
     :root {
-      --bg-dark: #08121e;
-      --ocean-blue: #1d4ed8;
-      --card-bg: rgba(15, 23, 42, 0.9);
-      --accent-gold: #f59e0b;
-      --eco-green: #10b981;
-      --danger-red: #ef4444;
-      --text-light: #f8fafc;
+      --bg: #050b14;
+      --panel: #0d192b;
+      --accent-blue: #38bdf8;
+      --accent-green: #10b981;
+      --accent-red: #f43f5e;
+      --text: #f8fafc;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-light);
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -29,178 +28,160 @@
       position: relative;
       width: 960px;
       height: 600px;
-      border-radius: 16px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+      border: 1px solid #1e293b;
     }
-    canvas {
-      display: block;
-      background: linear-gradient(to bottom, #0f2b48, #050d1a);
-    }
-    .hud-layer {
+    canvas { display: block; background: #030712; }
+    
+    /* UI Overlay */
+    .ui-overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 24px;
+      padding: 20px;
     }
-    .hud-header {
+    .hud {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      font-size: 0.95rem;
+      font-weight: bold;
       text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
-    .light-meter {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: bold;
-      color: var(--accent-gold);
+    .status-badge {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid #334155;
+      padding: 8px 16px;
+      border-radius: 20px;
     }
-    .meter-bar {
-      width: 150px;
-      height: 12px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-    .meter-fill {
-      width: 20%;
-      height: 100%;
-      background: var(--accent-gold);
-      transition: width 0.5s ease;
-    }
-    .overlay-modal {
+
+    /* Modals */
+    .modal-backdrop {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(8, 18, 30, 0.88);
+      background: rgba(3, 7, 18, 0.9);
       backdrop-filter: blur(8px);
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 40px;
-      text-align: center;
       pointer-events: auto;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.3s ease;
     }
-    .overlay-modal.hidden { opacity: 0; pointer-events: none; }
+    .modal-backdrop.hidden { opacity: 0; pointer-events: none; }
     .card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.15);
+      background: var(--panel);
+      border: 1px solid #334155;
       border-radius: 16px;
       padding: 32px;
-      max-width: 600px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      width: 640px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      text-align: center;
     }
-    h2 { font-size: 1.8rem; margin-bottom: 12px; color: #38bdf8; }
-    p { font-size: 1rem; line-height: 1.7; color: #94a3b8; margin-bottom: 24px; }
-    .choice-group { display: flex; flex-direction: column; gap: 12px; }
-    .btn-choice {
-      background: rgba(255,255,255,0.05);
-      color: var(--text-light);
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 14px 20px;
-      border-radius: 10px;
+    h2 { font-size: 1.6rem; color: var(--accent-blue); margin-bottom: 12px; }
+    p { font-size: 0.95rem; line-height: 1.6; color: #94a3b8; margin-bottom: 24px; }
+    
+    .btn {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid #475569;
+      padding: 12px 24px;
+      border-radius: 8px;
       font-size: 0.95rem;
       cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+      margin-bottom: 10px;
       text-align: left;
-      transition: all 0.25s ease;
     }
-    .btn-choice:hover {
-      background: rgba(56, 189, 248, 0.2);
-      border-color: #38bdf8;
-      transform: translateY(-2px);
-    }
-    .btn-good {
-      border-color: var(--eco-green);
-      background: rgba(16, 185, 129, 0.1);
-    }
-    .btn-good:hover {
-      background: rgba(16, 185, 129, 0.25);
-    }
-    .tzuchi-badge {
+    .btn:hover { background: #334155; border-color: var(--accent-blue); }
+    .btn-green { border-color: var(--accent-green); background: rgba(16, 185, 129, 0.1); }
+    .btn-green:hover { background: rgba(16, 185, 129, 0.25); }
+    
+    .tzuchi-tag {
       display: inline-block;
-      margin-top: 15px;
-      font-size: 0.85rem;
-      color: #10b981;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--accent-green);
       background: rgba(16, 185, 129, 0.1);
-      padding: 6px 12px;
-      border-radius: 20px;
+      padding: 4px 12px;
+      border-radius: 12px;
     }
   </style>
 </head>
 <body>
 
 <div id="game-container">
-  <canvas id="canvas" width="960" height="600"></canvas>
+  <canvas id="gameCanvas" width="960" height="600"></canvas>
   
-  <div class="hud-layer">
-    <div class="hud-header">
-      <div>棲息地：小琉球海域 (綠蠵龜視角)</div>
-      <div class="light-meter">
-        <span>慈心善念心燈：</span>
-        <div class="meter-bar"><div id="light-fill" class="meter-fill"></div></div>
-      </div>
+  <div class="ui-overlay">
+    <div class="hud">
+      <div class="status-badge" id="hud-status">當前狀態：靈動游擺 (運動阻力 0%)</div>
+      <div class="status-badge" style="color: var(--accent-blue);" id="hud-karma">慈心造善指數：0</div>
     </div>
   </div>
 
-  <!-- 序章：進入視角 -->
-  <div id="modal-start" class="overlay-modal">
+  <!-- 開場 modal -->
+  <div class="modal-backdrop" id="modal-start">
     <div class="card">
-      <h2>序章：透光的湛藍海域</h2>
-      <p>你是一隻棲息於小琉球海岸的綠蠵龜。<br>陽光透過水面灑下，周圍飄浮著看起來美味的「水母」。<br><br><b>[操作指南]</b> 移動滑鼠引導游動，擺動雙槳進行覓食。</p>
-      <button class="btn-choice btn-good" onclick="startGame()">點亮心燈，開始體驗</button>
+      <h2>第一章：水下 15 米的流體力學</h2>
+      <p>你是一隻棲息於小琉球的綠蠵龜。<br>利用<b>滑鼠引導方向</b>，擺動雙槳在動態洋流中尋找水母覓食。<br>注意：微物理模擬已開啟，請感受游動的阻力與反作用力。</p>
+      <button class="btn btn-green" onclick="startGame()">擺動雙槳，潛入深藍</button>
     </div>
   </div>
 
-  <!-- 第一章轉折：因果相連 -->
-  <div id="modal-p1" class="overlay-modal hidden">
+  <!-- 剖檢與絕望 modal -->
+  <div class="modal-backdrop hidden" id="modal-forensic">
     <div class="card">
-      <h2 style="color: var(--danger-red);">胃部的微米梗阻...</h2>
-      <p>你吞下的並非水母，而是經過海水漂流碎裂的<b>一次性塑膠袋與手搖飲封口膜</b>。<br>它的異物感沉重地押在你的胃裡，游動手感變得無比遲緩...</p>
-      <div class="choice-group">
-        <button class="btn-choice" onclick="triggerTimeLoop()">進入【時間迴廊】：回到陸地源頭尋找解法</button>
-      </div>
+      <h2 style="color: var(--accent-red);">梗阻警報：無解的死局</h2>
+      <p>經過剖檢分析，腸道內卡住了 <b>2016 年產出的 PP 一次性杯角與半降解塑膠袋</b>。<br>塑膠微粒已滲入淋巴組織。<b>無論現代的手術解謎精細度多高，此時間線的海龜生命值均無法復原。</b></p>
+      <button class="btn" onclick="openTimeLoop()">開啟【時空因果迴廊】：回到 2016 年陸地源頭</button>
     </div>
   </div>
 
-  <!-- 第二章：陸地上的造善抉擇 (慈心精神) -->
-  <div id="modal-loop" class="overlay-modal hidden">
+  <!-- 慈心源頭減量解謎 modal -->
+  <div class="modal-backdrop hidden" id="modal-loop">
     <div class="card">
-      <h2>時空節點：2026 年的日常早餐店</h2>
-      <p>歷史不會憑空改變，除非你在源頭種下善的種子。<br>當你準備買一杯早餐手搖飲與餐點時，你決定：</p>
-      <div class="choice-group">
-        <button class="btn-choice" onclick="makeKarmaChoice(false)">順手接過店家給的一次性塑膠袋與塑膠吸管 (圖方便)</button>
-        <button class="btn-choice btn-good" onclick="makeKarmaChoice(true)">響應慈心「沒塑就來」：自備環保杯與購物袋，點亮源頭減量心燈！</button>
-      </div>
+      <h2>時空節點：2016 年早餐店供應鏈</h2>
+      <p>你是這間早餐店的營運決策者。面對每日 500 個一次性塑膠包材需求，你選擇：</p>
+      <button class="btn" onclick="solveLoop(false)">繼續使用便利的傳統塑膠包材 (維持現狀)</button>
+      <button class="btn btn-green" onclick="solveLoop(true)">響應慈心「bb 減塑大集合」：導入無塑示範點與社區循環杯系統！</button>
     </div>
   </div>
 
-  <!-- 終章：善念的漣漪 -->
-  <div id="modal-end" class="overlay-modal hidden">
+  <!-- 結局 modal -->
+  <div class="modal-backdrop hidden" id="modal-end">
     <div class="card">
-      <h2 id="end-title">因果翻轉：萬物共存</h2>
-      <p id="end-desc"></p>
-      <div class="tzuchi-badge">🌱 慈心基金會：日常的一個微小造善選擇，都是遠方海洋生物重獲新生的契機。</div>
+      <h2 style="color: var(--accent-green);">因果翻轉：藍色重塑</h2>
+      <p>因為你在源頭種下的「造善種子」，連鎖反應成功攔截了數以萬計的一次性包材。<br><br>現代時間線已被改寫！海龜胃裡的異物瞬間瓦解，阻力歸零，牠擺動雙翅，與萬物共存共榮！</p>
+      <div class="tzuchi-tag">🌱 慈心有機農業發展基金會：源頭減量，才是拯救海洋生命的根本解法。</div>
       <br><br>
-      <button class="btn-choice btn-good" onclick="restartGame()">再次啟程，傳遞善念</button>
+      <button class="btn btn-green" onclick="resetGame()">再次體驗造善迴路</button>
     </div>
   </div>
 </div>
 
 <script>
-  const canvas = document.getElementById('canvas');
+  const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
 
-  let active = false;
+  let gameState = 'START';
   let mouse = { x: 480, y: 300 };
-  let turtle = { x: 480, y: 300, speed: 0.06, size: 28, eatenPlastic: 0 };
+  
+  // 具備慣性與阻力的海龜物理模型
+  let turtle = {
+    x: 480, y: 300,
+    vx: 0, vy: 0,
+    angle: 0,
+    drag: 0.95, // 正常阻力
+    plasticCount: 0
+  };
+
   let items = [];
-  let karmaPoints = 20;
+  let karma = 0;
 
   canvas.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
@@ -210,142 +191,144 @@
 
   function startGame() {
     document.getElementById('modal-start').classList.add('hidden');
-    active = true;
+    gameState = 'PLAYING';
     spawnItems();
-    requestAnimationFrame(loop);
+    requestAnimationFrame(gameLoop);
   }
 
   function spawnItems() {
     items = [];
-    for (let i = 0; i < 7; i++) {
+    for(let i=0; i<8; i++) {
       items.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        isPlastic: Math.random() > 0.3, // 70% 假水母 (塑膠)
-        size: Math.random() * 8 + 14,
-        pulse: Math.random() * Math.PI
+        isPlastic: Math.random() > 0.25, // 75% 偽裝塑膠
+        r: Math.random() * 8 + 12,
+        phase: Math.random() * Math.PI * 2
       });
     }
   }
 
-  function loop() {
-    if (!active) return;
+  function gameLoop() {
+    if (gameState !== 'PLAYING') return;
 
-    // 清除畫布，動態水底光影
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 污染度背景混合
-    if (turtle.eatenPlastic > 0) {
-      ctx.fillStyle = `rgba(15, 10, 20, ${turtle.eatenPlastic * 0.25})`;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // 1. 微物理計算：加速度與流體阻力
+    let dx = mouse.x - turtle.x;
+    let dy = mouse.y - turtle.y;
+    let targetAngle = Math.atan2(dy, dx);
+    
+    // 角度平滑過渡
+    turtle.angle += (targetAngle - turtle.angle) * 0.1;
+
+    // 依據吃入的塑膠量增加「黏滯阻力」
+    let currentDrag = Math.max(0.78, turtle.drag - (turtle.plasticCount * 0.05));
+    turtle.vx = (turtle.vx + Math.cos(turtle.angle) * 0.4) * currentDrag;
+    turtle.vy = (turtle.vy + Math.sin(turtle.angle) * 0.4) * currentDrag;
+
+    turtle.x += turtle.vx;
+    turtle.y += turtle.vy;
+
+    // 畫面震動特效 (當阻力過大時)
+    if (turtle.plasticCount > 1) {
+      let shake = (Math.random() - 0.5) * turtle.plasticCount * 2;
+      ctx.save();
+      ctx.translate(shake, shake);
     }
 
-    // 平滑游動物理
-    turtle.x += (mouse.x - turtle.x) * turtle.speed;
-    turtle.y += (mouse.y - turtle.y) * turtle.speed;
-
-    // 繪製海龜
+    // 2. 繪製海龜
     ctx.save();
     ctx.translate(turtle.x, turtle.y);
-    let angle = Math.atan2(mouse.y - turtle.y, mouse.x - turtle.x);
-    ctx.rotate(angle);
+    ctx.rotate(turtle.angle);
 
-    // 龜殼 (顏色隨健康變化)
-    ctx.fillStyle = turtle.eatenPlastic > 1 ? "#4b5563" : "#10b981";
+    // 龜殼
+    ctx.fillStyle = turtle.plasticCount > 1 ? "#475569" : "#10b981";
     ctx.beginPath();
-    ctx.ellipse(0, 0, turtle.size, turtle.size * 0.65, 0, 0, Math.PI * 2);
+    ctx.ellipse(0, 0, 24, 16, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // 划槳鰭腳
+    // 划漿
     ctx.fillStyle = "#059669";
     ctx.beginPath();
-    ctx.ellipse(8, -18, 14, 6, Math.PI / 4, 0, Math.PI * 2);
-    ctx.ellipse(8, 18, 14, 6, -Math.PI / 4, 0, Math.PI * 2);
+    ctx.ellipse(6, -14, 12, 5, Math.PI/4, 0, Math.PI*2);
+    ctx.ellipse(6, 14, 12, 5, -Math.PI/4, 0, Math.PI*2);
     ctx.fill();
-
     ctx.restore();
 
-    // 繪製浮游漂流物 (水母 vs 塑膠袋錯覺)
-    items.forEach((item, index) => {
-      item.pulse += 0.04;
-      let floatY = item.y + Math.sin(item.pulse) * 4;
+    // 3. 繪製浮游物與碰撞偵測
+    items.forEach((item, idx) => {
+      item.phase += 0.03;
+      let floatY = item.y + Math.sin(item.phase) * 3;
 
       ctx.save();
-      if (item.isPlastic) {
-        // 透明塑膠袋 (半透明模糊)
-        ctx.fillStyle = "rgba(241, 245, 249, 0.45)";
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+      if(item.isPlastic) {
+        // 半透明塑膠袋
+        ctx.fillStyle = "rgba(241, 245, 249, 0.4)";
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
         ctx.beginPath();
-        ctx.arc(item.x, floatY, item.size, 0, Math.PI * 2);
+        ctx.arc(item.x, floatY, item.r, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
       } else {
-        // 真水母 (溫暖藍光)
-        ctx.fillStyle = "rgba(56, 189, 248, 0.75)";
+        // 真水母
+        ctx.fillStyle = "rgba(56, 189, 248, 0.7)";
         ctx.beginPath();
-        ctx.arc(item.x, floatY, item.size * 0.75, Math.PI, 0);
+        ctx.arc(item.x, floatY, item.r * 0.8, Math.PI, 0);
         ctx.fill();
       }
       ctx.restore();
 
-      // 碰撞偵測
+      // 碰撞
       let dist = Math.hypot(turtle.x - item.x, turtle.y - floatY);
-      if (dist < turtle.size + item.size) {
-        if (item.isPlastic) {
-          turtle.eatenPlastic++;
-          turtle.speed = Math.max(0.015, turtle.speed - 0.015); // 手感變重
+      if (dist < 24 + item.r) {
+        if(item.isPlastic) {
+          turtle.plasticCount++;
+          document.getElementById('hud-status').innerText = `當前狀態：游動重滯 (運動阻力 ${turtle.plasticCount * 20}%)`;
         }
-        
-        // 重置被吃掉的物品
-        items[index] = {
+        // 重生物品
+        items[idx] = {
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          isPlastic: Math.random() > 0.3,
-          size: Math.random() * 8 + 14,
-          pulse: Math.random() * Math.PI
+          isPlastic: Math.random() > 0.2,
+          r: Math.random() * 8 + 12,
+          phase: Math.random() * Math.PI * 2
         };
 
-        if (turtle.eatenPlastic >= 2) {
-          active = false;
-          document.getElementById('modal-p1').classList.remove('hidden');
+        if (turtle.plasticCount >= 3) {
+          gameState = 'FORENSIC';
+          document.getElementById('modal-forensic').classList.remove('hidden');
         }
       }
     });
 
-    requestAnimationFrame(loop);
+    if (turtle.plasticCount > 1) ctx.restore();
+
+    requestAnimationFrame(gameLoop);
   }
 
-  function triggerTimeLoop() {
-    document.getElementById('modal-p1').classList.add('hidden');
+  function openTimeLoop() {
+    document.getElementById('modal-forensic').classList.add('hidden');
     document.getElementById('modal-loop').classList.remove('hidden');
   }
 
-  function makeKarmaChoice(isGood) {
+  function solveLoop(isGood) {
     document.getElementById('modal-loop').classList.add('hidden');
-    let endTitle = document.getElementById('end-title');
-    let endDesc = document.getElementById('end-desc');
-
-    if (isGood) {
-      karmaPoints = 100;
-      document.getElementById('light-fill').style.width = '100%';
-      endTitle.innerText = "🌟 造善成功：心燈照亮大海";
-      endTitle.style.color = "#10b981";
-      endDesc.innerHTML = "因為你在陸地上的每一次堅持，源頭成功攔截了一顆塑膠袋與吸管。<br><br>在大海的另一端，海龜胃裡的重壓消失了！牠重新振翅，帶著光芒悠游於蔚藍之中。";
+    if(isGood) {
+      karma = 100;
+      document.getElementById('hud-karma').innerText = `慈心造善指數：${karma} (源頭已切斷)`;
+      document.getElementById('modal-end').classList.remove('hidden');
     } else {
-      karmaPoints = 10;
-      document.getElementById('light-fill').style.width = '10%';
-      endTitle.innerText = "💔 便利的迴圈";
-      endTitle.style.color = "#ef4444";
-      endDesc.innerHTML = "一次性的便利，會在自然界留下數百年的傷痕。<br><br>海龜帶著重壓在混濁的水中游動... 但請記住，每一次走進超商，我們都有重新選擇『造善』的機會！";
+      alert("歷史未被改變，塑膠繼續流入海洋... 請重新嘗試造善選擇！");
+      document.getElementById('modal-loop').classList.remove('hidden');
     }
-
-    document.getElementById('modal-end').classList.remove('hidden');
   }
 
-  function restartGame() {
-    turtle = { x: 480, y: 300, speed: 0.06, size: 28, eatenPlastic: 0 };
-    karmaPoints = 20;
-    document.getElementById('light-fill').style.width = '20%';
+  function resetGame() {
+    turtle = { x: 480, y: 300, vx: 0, vy: 0, angle: 0, drag: 0.95, plasticCount: 0 };
+    karma = 0;
+    document.getElementById('hud-status').innerText = `當前狀態：靈動游擺 (運動阻力 0%)`;
+    document.getElementById('hud-karma').innerText = `慈心造善指數：0`;
     document.getElementById('modal-end').classList.add('hidden');
     startGame();
   }
